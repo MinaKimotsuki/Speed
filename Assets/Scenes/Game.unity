@@ -415,6 +415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81726f8c90e5e8f498f8cb5fa98be406, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCardsController: {fileID: 2065388741}
   card: {fileID: 4581475758109077300, guid: f9273b87eafbed644b82c423127fa2de, type: 3}
   cards: {fileID: 4739924417366946122}
   hand1: {fileID: 349131413}
