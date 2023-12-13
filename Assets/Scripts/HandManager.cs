@@ -30,6 +30,6 @@ public class HandManager : MonoBehaviour
             }
         }
         
-        return currentHand.isFull;
+        return !currentHand.isFull;
     }
 }

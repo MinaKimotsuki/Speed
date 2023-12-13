@@ -10,9 +10,11 @@ public class PlayerController : MonoBehaviour
     bool isCardMovingToHand = false;
     bool isCardMovingToPlace = false;
     Vector3 screenPoint;
-    int orderInRayer = 0;
+    int orderInRayer = 1;
+    GameObject movingCard;
     GameObject nextObjectToHand;
     [SerializeField] PlayerCardsController playerCardsController;
+    [SerializeField] PlaceController placeController;
     [SerializeField] GameObject card;
     [SerializeField] GameObject cards;
     [SerializeField] GameObject hand1;
@@ -27,6 +29,14 @@ public class PlayerController : MonoBehaviour
     GameObject cardInHand2;
     GameObject cardInHand3;
     GameObject cardInHand4;
+    int hand1Number;
+    int hand2Number;
+    int hand3Number;
+    int hand4Number;
+    int playerCardsNumber1;
+    int playerCardsNumber2;
+    int playerCardsNumber3;
+    int playerCardsNumber4;
 
 
     // Start is called before the first frame update
@@ -54,11 +64,13 @@ public class PlayerController : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit2d = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction);
             if (!hit2d) return;
-            if (hit2d.collider.gameObject.CompareTag("Cards"))
+            if (hit2d.collider.gameObject.name == "PlayerCards")
             {
                 if (isHand1Full == false || isHand2Full == false || isHand3Full == false || isHand4Full == false)
                 {
                     clickedGameObject = Instantiate(card, cards.transform.position, Quaternion.identity);
+                    /*playerCardsController.CardObjects.Add(clickedGameObject);
+                    playerCardsController.PutCardsNumber();*/
                     clickedGameObject.GetComponent<SpriteRenderer>().sortingOrder = orderInRayer;
                     clickedGameObject.transform.GetChild(0).GetComponent<MeshRenderer>().sortingOrder = orderInRayer;
                     clickedGameObject.transform.GetChild(1).GetComponent<MeshRenderer>().sortingOrder = orderInRayer;
@@ -74,6 +86,9 @@ public class PlayerController : MonoBehaviour
                 clickedGameObjectInHand = hit2d.collider.gameObject;
                 isCardMovingToPlace = true;
                 nextObjectToHand = cardInHand1;
+                movingCard = cardInHand1;
+                hand1Number = playerCardsNumber1;
+                Debug.Log(hand1Number);
             }
             if (hit2d.collider.gameObject.name == "Hand2")
             {
@@ -81,6 +96,8 @@ public class PlayerController : MonoBehaviour
                 clickedGameObjectInHand = hit2d.collider.gameObject;
                 isCardMovingToPlace = true;
                 nextObjectToHand = cardInHand2;
+                movingCard = cardInHand2;
+                hand2Number = playerCardsNumber2;
             }
             if (hit2d.collider.gameObject.name == "Hand3")
             {
@@ -88,6 +105,8 @@ public class PlayerController : MonoBehaviour
                 clickedGameObjectInHand = hit2d.collider.gameObject;
                 isCardMovingToPlace = true;
                 nextObjectToHand = cardInHand3;
+                movingCard = cardInHand3;
+                hand3Number = playerCardsNumber3;
             }
             if (hit2d.collider.gameObject.name == "Hand4")
             {
@@ -95,6 +114,8 @@ public class PlayerController : MonoBehaviour
                 clickedGameObjectInHand = hit2d.collider.gameObject;
                 isCardMovingToPlace = true;
                 nextObjectToHand = cardInHand4;
+                movingCard = cardInHand4;
+                hand4Number = playerCardsNumber4;
             }
         }
     }
@@ -110,17 +131,15 @@ public class PlayerController : MonoBehaviour
             RaycastHit2D hit2d = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction);
             if (!hit2d)
             {
-                if (clickedGameObject.CompareTag("Hand"))
-                {
-                    Destroy(pastClickedGameObject);
-                    isCardMovingToHand = false;
-                }
+                Destroy(pastClickedGameObject);
+                isCardMovingToHand = false;
             }
             if (hit2d)
             {
                 clickedGameObject = hit2d.transform.gameObject;
                 if (clickedGameObject.name == "Hand1" && isHand1Full == false)
                 {
+                    playerCardsNumber1 = playerCardsController.PlayerCards[0][0];
                     PlaceCardToHand(pastClickedGameObject);
                     isHand1Full = true;
                     cardInHand1 = pastClickedGameObject;
@@ -130,18 +149,21 @@ public class PlayerController : MonoBehaviour
                     PlaceCardToHand(pastClickedGameObject);
                     isHand2Full = true;
                     cardInHand2 = pastClickedGameObject;
+                    playerCardsNumber2 = playerCardsController.PlayerCards[0][0];
                 }
                 else if (clickedGameObject.name == "Hand3" && isHand3Full == false)
                 {
                     PlaceCardToHand(pastClickedGameObject);
                     isHand3Full = true;
                     cardInHand3 = pastClickedGameObject;
+                    playerCardsNumber3 = playerCardsController.PlayerCards[0][0];
                 }
                 else if (clickedGameObject.name == "Hand4" && isHand4Full == false)
                 {
                     PlaceCardToHand(pastClickedGameObject);
                     isHand4Full = true;
                     cardInHand4 = pastClickedGameObject;
+                    playerCardsNumber4 = playerCardsController.PlayerCards[0][0];
                 }
                 else
                 {
@@ -164,30 +186,127 @@ public class PlayerController : MonoBehaviour
             if (hit2d)
             {
                 clickedGameObjectInHand = hit2d.collider.gameObject;
+                if (clickedGameObjectInHand.CompareTag("Hand") || clickedGameObjectInHand.CompareTag("Cards"))
+                {
+                    movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                    isCardMovingToPlace = false;
+                    return;
+                }
                 if (pastClickedGameObjectInHand.name == "Hand1")
                 {
+                    if (clickedGameObjectInHand.name == "Place1")
+                    {
+                        Debug.Log(hand1Number);
+                        Debug.Log(placeController.IsPutPlace1OK(hand1Number));
+                        if (!placeController.IsPutPlace1OK(hand1Number))
+                        {
+                            movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                            isCardMovingToPlace = false;
+                            return;
+                        }
+                        placeController.SetPlace1Before(hand1Number);
+                    }
+                    if (clickedGameObjectInHand.name == "Place2")
+                    {
+                        if (!placeController.IsPutPlace2OK(hand1Number))    
+                        {
+                            movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                            isCardMovingToPlace = false;
+                            return;
+                        }
+                        placeController.SetPlace2Before(hand1Number);
+                    }
                     cardInHand1.transform.position = clickedGameObjectInHand.transform.position;
                     isCardMovingToPlace = false;
                     isHand1Full = false;
+                    cardInHand1 = null;
                 }
                 if (pastClickedGameObjectInHand.name == "Hand2")
                 {
                     cardInHand2.transform.position = clickedGameObjectInHand.transform.position;
                     isCardMovingToPlace = false;
                     isHand2Full = false;
+                    cardInHand2 = null;
+                    if (clickedGameObjectInHand.name == "Place1")
+                    {
+                        if (!placeController.IsPutPlace1OK(hand1Number))
+                        {
+                            movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                            isCardMovingToPlace = false;
+                            return;
+                        }
+                        placeController.SetPlace1Before(hand2Number);
+                    }
+                    if (clickedGameObjectInHand.name == "Place2")
+                    {
+                        if (!placeController.IsPutPlace2OK(hand1Number))
+                        {
+                            movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                            isCardMovingToPlace = false;
+                            return;
+                        }
+                        placeController.SetPlace2Before(hand2Number);
+                    }
                 }
                 if (pastClickedGameObjectInHand.name == "Hand3")
                 {
                     cardInHand3.transform.position = clickedGameObjectInHand.transform.position;
                     isCardMovingToPlace = false;
                     isHand3Full = false;
+                    cardInHand3 = null;
+                    if (clickedGameObjectInHand.name == "Place1")
+                    {
+                        if (!placeController.IsPutPlace1OK(hand1Number))
+                        {
+                            movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                            isCardMovingToPlace = false;
+                            return;
+                        }
+                        placeController.SetPlace1Before(hand3Number);
+                    }
+                    if (clickedGameObjectInHand.name == "Place2")
+                    {
+                        if (!placeController.IsPutPlace2OK(hand1Number))
+                        {
+                            movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                            isCardMovingToPlace = false;
+                            return;
+                        }
+                        placeController.SetPlace2Before(hand3Number);
+                    }
                 }
                 if (pastClickedGameObjectInHand.name == "Hand4")
                 {
+                    if (clickedGameObjectInHand.name == "Place1")
+                    {
+                        if (!placeController.IsPutPlace1OK(hand1Number))
+                        {
+                            movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                            isCardMovingToPlace = false;
+                            return;
+                        }
+                        placeController.SetPlace1Before(hand3Number);
+                    }
+                    if (clickedGameObjectInHand.name == "Place2")
+                    {
+                        if (!placeController.IsPutPlace2OK(hand1Number))
+                        {
+                            movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                            isCardMovingToPlace = false;
+                            return;
+                        }
+                        placeController.SetPlace2Before(hand4Number);
+                    }
                     cardInHand4.transform.position = clickedGameObjectInHand.transform.position;
                     isCardMovingToPlace = false;
                     isHand4Full = false;
+                    cardInHand4 = null;
                 }
+            }
+            if (!hit2d)
+            {
+                movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                isCardMovingToPlace = false;
             }
         }
     }
