@@ -5,8 +5,6 @@ using UnityEngine;
 public class PlayerCardsController : MonoBehaviour
 {
     public List<List<int>> PlayerCards { get; set; } = new List<List<int>>();
-    /*public List<GameObject> CardObjects { get; set; } = new List<GameObject>();
-    Card[] cards = new Card[26];*/
 
     // Start is called before the first frame update
     void Start()
@@ -22,13 +20,4 @@ public class PlayerCardsController : MonoBehaviour
     {
         
     }
-
-    /*public void PutCardsNumber()
-    {
-        for (int i = 0; i < CardObjects.Count; i++)
-        {
-            cards[i] = CardObjects[i].GetComponent<Card>();
-            cards[i].number = PlayerCards[i][0];
-        }
-    }*/
 }
