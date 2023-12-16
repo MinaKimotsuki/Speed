@@ -8,12 +8,16 @@ public class EnemyController : MonoBehaviour
     [SerializeField] GameObject card;
     [SerializeField] EnemyCardsController enemyCardsController;
     [SerializeField] PlaceController placeController;
+    [SerializeField] GameManager gameManager;
+    [SerializeField] PlayerController playerController;
     int[] handNumbers = new int[4];
     bool[] isHandsFull = new bool[4];
     GameObject[] instantiatedObject = new GameObject[4];
     int handNotFull = 4;
-    /*bool isFinishAfterSubmit = true;
-    bool isFinishPlaceSubmit = false;*/
+    /*bool isFinishAfterSubmit = true;*/
+    /*bool isFinishPlaceSubmit = false;*/
+    public bool cannotSubmit = true; //trueÅ®Ç≈Ç´ÇÈ falseÅ®Ç≈Ç´Ç»Ç¢
+    public bool isCoroutinePlay = true;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +42,7 @@ public class EnemyController : MonoBehaviour
         FirstSubmit(2);
         yield return new WaitForSeconds(1f);
         FirstSubmit(3);
+        JudgeCannotSubmit();
         StartCoroutine(PlaceSubmitCoroutine());
     }
 
@@ -60,15 +65,19 @@ public class EnemyController : MonoBehaviour
                 handNotFull = i;
             }
         }
-        /*if (!isFinishAfterSubmit)
-        {*/
-            if (handNotFull != 4)
-            {
-                /*isFinishAfterSubmit = true;*/
-                yield return new WaitForSeconds(10f);
-                AfterSubmit();
-            }
-        /*}*/
+        yield return new WaitForSeconds(10f);
+        if (handNotFull != 4)
+        {
+            AfterSubmit();
+        }
+        else
+        {
+            Debug.Log("c");
+            isCoroutinePlay = false;
+            cannotSubmit = false;
+            gameManager.SubmitWhenStuck();
+            Debug.Log("enemyStuck");
+        }
     }
 
 
@@ -89,12 +98,9 @@ public class EnemyController : MonoBehaviour
     {
         if (isHandsFull[0] == true && isHandsFull[1] == true && isHandsFull[2] == true && isHandsFull[3] == true)
         {
-            /*if (!isFinishPlaceSubmit)
-            {
-                isFinishPlaceSubmit = true;*/
-                yield return new WaitForSeconds(10f);
-                PlaceSubmit();
-            /*}*/
+            isCoroutinePlay = true;
+            yield return new WaitForSeconds(10f);
+            PlaceSubmit();
         }
     }
     void PlaceSubmit()
@@ -105,21 +111,67 @@ public class EnemyController : MonoBehaviour
             {
                 instantiatedObject[i].transform.position = new Vector3(-1, 0, 0);
                 isHandsFull[i] = false;
-                /*isFinishAfterSubmit = false;*/
                 StartCoroutine(AfterSubmitCoroutine());
                 placeController.SetPlace1Before(handNumbers[i]);
+                playerController.cannotSubmit = true;
+                playerController.JudgeCannotSubmit();
                 return;
             }
             else if (placeController.IsPutPlace2OK(handNumbers[i]))
             {
                 instantiatedObject[i].transform.position = new Vector3(1, 0, 0);
                 isHandsFull[i] = false;
-                /*isFinishAfterSubmit = false;*/
                 StartCoroutine(AfterSubmitCoroutine());
                 placeController.SetPlace2Before(handNumbers[i]);
+                playerController.cannotSubmit = true;
+                playerController.JudgeCannotSubmit();
                 return;
             }
 
+        }
+    }
+
+    public void JudgeCannotSubmit()
+    {
+        if (isHandsFull[0] == false || isHandsFull[1] == false || isHandsFull[2] == false || isHandsFull[3] == false) return;
+        Debug.Log("a");
+        if (placeController.IsPutPlace1OK(handNumbers[0]))
+        {
+
+        }
+        else if (placeController.IsPutPlace1OK(handNumbers[1]))
+        {
+
+        }
+        else if (placeController.IsPutPlace1OK(handNumbers[2]))
+        {
+
+        }
+        else if (placeController.IsPutPlace1OK(handNumbers[3]))
+        {
+
+        }
+        else if (placeController.IsPutPlace2OK(handNumbers[0]))
+        {
+
+        }
+        else if (placeController.IsPutPlace2OK(handNumbers[1]))
+        {
+
+        }
+        else if (placeController.IsPutPlace2OK(handNumbers[2]))
+        {
+
+        }
+        else if (placeController.IsPutPlace2OK(handNumbers[3]))
+        {
+
+        }
+        else
+        {
+            cannotSubmit = false;
+            gameManager.SubmitWhenStuck();
+            Debug.Log("enemyStuck");
         }
     }
 }

@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     List<List<int>> shuffleCards = new List<List<int>>();
     [SerializeField] PlayerCardsController playerCardsController;
     [SerializeField] EnemyCardsController enemyCardsController;
+    [SerializeField] PlayerController playerController;
+    [SerializeField] EnemyController enemyController;
     [SerializeField] GameObject card;
     [SerializeField] GameObject place1;
     [SerializeField] GameObject place2;
@@ -59,30 +61,38 @@ public class GameManager : MonoBehaviour
 
     void SubmitFirstCard()
     {
-        Debug.Log("d");
-        GameObject firstSubmitedCard1 = Instantiate(card, place1.transform.position, Quaternion.identity); 
-        /*playerCardsController.CardObjects.Add(firstSubmitedCard1);
-        playerCardsController.PutCardsNumber();*/
-        GameObject firstSubmitedCard2 = Instantiate(card, place2.transform.position, Quaternion.Euler(0, 0, 180));
-        /*playerCardsController.CardObjects.Add(firstSubmitedCard2);
-        playerCardsController.PutCardsNumber();*/
-        firstSubmitedCard1.transform.GetChild(0).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][1].ToString();
-        firstSubmitedCard1.transform.GetChild(1).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][0].ToString();
-        firstSubmitedCard2.transform.GetChild(0).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][1].ToString();
-        firstSubmitedCard2.transform.GetChild(1).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][0].ToString();
-        Debug.Log("c");
-        Debug.Log(playerCardsController.PlayerCards[0][0]);
-        placeController.SetPlace1Before(playerCardsController.PlayerCards[0][0]);
-        placeController.SetPlace2Before(enemyCardsController.EnemyCards[0][0]);
-        Debug.Log("b");
-        playerCardsController.PlayerCards.RemoveAt(0);
-        enemyCardsController.EnemyCards.RemoveAt(0);
-        Debug.Log("a");
+        Submit();
         /*firstSubmitedCard1.GetComponent<MeshRenderer>().sortingOrder = -1;
         firstSubmitedCard2.GetComponent<MeshRenderer>().sortingOrder = -1;*/
         /*firstSubmitedCard1.transform.GetChild(0).GetComponent<MeshRenderer>().sortingOrder = 0;
         firstSubmitedCard1.transform.GetChild(1).GetComponent<MeshRenderer>().sortingOrder = 0;
         firstSubmitedCard2.transform.GetChild(0).GetComponent<MeshRenderer>().sortingOrder = 0;
         firstSubmitedCard2.transform.GetChild(1).GetComponent<MeshRenderer>().sortingOrder = 0;*/
+    }
+
+    public void SubmitWhenStuck()
+    {
+        Debug.Log(playerController.cannotSubmit);
+        Debug.Log(enemyController.cannotSubmit);
+        if (playerController.cannotSubmit == true || enemyController.cannotSubmit == true) return;
+        Submit();
+        Debug.Log("bothStuck");
+        playerController.cannotSubmit = true;
+        enemyController.cannotSubmit = true;
+    }
+
+    void Submit()
+    {
+        GameObject firstSubmitedCard1 = Instantiate(card, place1.transform.position, Quaternion.identity);
+        GameObject firstSubmitedCard2 = Instantiate(card, place2.transform.position, Quaternion.Euler(0, 0, 180));
+        firstSubmitedCard1.transform.GetChild(0).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][1].ToString();
+        firstSubmitedCard1.transform.GetChild(1).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][0].ToString();
+        firstSubmitedCard2.transform.GetChild(0).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][1].ToString();
+        firstSubmitedCard2.transform.GetChild(1).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][0].ToString();
+        /*Debug.Log(playerCardsController.PlayerCards[0][0]);*/
+        placeController.SetPlace1Before(playerCardsController.PlayerCards[0][0]);
+        placeController.SetPlace2Before(enemyCardsController.EnemyCards[0][0]);
+        playerCardsController.PlayerCards.RemoveAt(0);
+        enemyCardsController.EnemyCards.RemoveAt(0);
     }
 }

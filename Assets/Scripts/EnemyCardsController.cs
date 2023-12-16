@@ -11,7 +11,7 @@ public class EnemyCardsController : MonoBehaviour
     {
         for (int i = 0; i < EnemyCards.Count; i++)
         {
-            Debug.Log("enemy" + i + ":" + EnemyCards[i][0] + "," + EnemyCards[i][1]);
+            /*Debug.Log("enemy" + i + ":" + EnemyCards[i][0] + "," + EnemyCards[i][1]);*/
         }
     }
 

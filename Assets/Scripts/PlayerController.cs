@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerCardsController playerCardsController;
     [SerializeField] PlaceController placeController;
     [SerializeField] EnemyController enemyController;
+    [SerializeField] GameManager gameManager;
     [SerializeField] GameObject card;
     [SerializeField] GameObject cards;
     [SerializeField] GameObject hand1;
@@ -38,6 +39,8 @@ public class PlayerController : MonoBehaviour
     int playerCardsNumber2;
     int playerCardsNumber3;
     int playerCardsNumber4;
+    public bool cannotSubmit = true; //trueÅ®Ç≈Ç´ÇÈ falseÅ®Ç≈Ç´Ç»Ç¢
+    public bool isCoroutinePlay = true;
 
 
     // Start is called before the first frame update
@@ -54,6 +57,7 @@ public class PlayerController : MonoBehaviour
         GetMouseButtonUpInPlace();
         CardTransformWhileMovingToHand();
         CardTransformWhileMovingToPlace();
+
     }
 
     void GetMouseButtonDown()
@@ -83,47 +87,39 @@ public class PlayerController : MonoBehaviour
             }
             if (hit2d.collider.gameObject.name == "Hand1")
             {
-                Debug.Log("a");
                 if (cardInHand1 == null) return;
                 clickedGameObjectInHand = hit2d.collider.gameObject;
                 isCardMovingToPlace = true;
                 nextObjectToHand = cardInHand1;
                 movingCard = cardInHand1;
                 hand1Number = playerCardsNumber1;
-                Debug.Log(hand1Number);
             }
             if (hit2d.collider.gameObject.name == "Hand2")
             {
-                Debug.Log("b");
                 if (cardInHand2 == null) return;
                 clickedGameObjectInHand = hit2d.collider.gameObject;
                 isCardMovingToPlace = true;
                 nextObjectToHand = cardInHand2;
                 movingCard = cardInHand2;
                 hand2Number = playerCardsNumber2;
-                Debug.Log(hand2Number);
             }
             if (hit2d.collider.gameObject.name == "Hand3")
             {
-                Debug.Log("c");
                 if (cardInHand3 == null) return;
                 clickedGameObjectInHand = hit2d.collider.gameObject;
                 isCardMovingToPlace = true;
                 nextObjectToHand = cardInHand3;
                 movingCard = cardInHand3;
                 hand3Number = playerCardsNumber3;
-                Debug.Log(hand3Number);
             }
             if (hit2d.collider.gameObject.name == "Hand4")
             {
-                Debug.Log("d");
                 if (cardInHand4 == null) return;
                 clickedGameObjectInHand = hit2d.collider.gameObject;
                 isCardMovingToPlace = true;
                 nextObjectToHand = cardInHand4;
                 movingCard = cardInHand4;
                 hand4Number = playerCardsNumber4;
-                Debug.Log(hand4Number);
             }
         }
     }
@@ -151,6 +147,7 @@ public class PlayerController : MonoBehaviour
                     PlaceCardToHand(pastClickedGameObject);
                     isHand1Full = true;
                     cardInHand1 = pastClickedGameObject;
+                    JudgeCannotSubmit();
                 }
                 else if (clickedGameObject.name == "Hand2" && isHand2Full == false)
                 {
@@ -158,6 +155,7 @@ public class PlayerController : MonoBehaviour
                     PlaceCardToHand(pastClickedGameObject);
                     isHand2Full = true;
                     cardInHand2 = pastClickedGameObject;
+                    JudgeCannotSubmit();
                 }
                 else if (clickedGameObject.name == "Hand3" && isHand3Full == false)
                 {
@@ -165,6 +163,7 @@ public class PlayerController : MonoBehaviour
                     PlaceCardToHand(pastClickedGameObject);
                     isHand3Full = true;
                     cardInHand3 = pastClickedGameObject;
+                    JudgeCannotSubmit();
                 }
                 else if (clickedGameObject.name == "Hand4" && isHand4Full == false)
                 {
@@ -172,6 +171,7 @@ public class PlayerController : MonoBehaviour
                     PlaceCardToHand(pastClickedGameObject);
                     isHand4Full = true;
                     cardInHand4 = pastClickedGameObject;
+                    JudgeCannotSubmit();
                 }
                 else
                 {
@@ -204,16 +204,19 @@ public class PlayerController : MonoBehaviour
                 {
                     if (clickedGameObjectInHand.name == "Place1")
                     {
-                        Debug.Log(hand1Number);
-                        Debug.Log(placeController.IsPutPlace1OK(hand1Number));
                         if (!placeController.IsPutPlace1OK(hand1Number))
                         {
                             movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
                             isCardMovingToPlace = false;
+                            enemyController.cannotSubmit = true;
+                            enemyController.JudgeCannotSubmit();
                             return;
                         }
                         placeController.SetPlace1Before(hand1Number);
-                        StartCoroutine(enemyController.PlaceSubmitCoroutine());
+                        if (!isCoroutinePlay)
+                        {
+                            StartCoroutine(enemyController.PlaceSubmitCoroutine());
+                        }
                     }
                     if (clickedGameObjectInHand.name == "Place2")
                     {
@@ -221,10 +224,15 @@ public class PlayerController : MonoBehaviour
                         {
                             movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
                             isCardMovingToPlace = false;
+                            enemyController.cannotSubmit = true;
+                            enemyController.JudgeCannotSubmit();
                             return;
                         }
                         placeController.SetPlace2Before(hand1Number);
-                        StartCoroutine(enemyController.PlaceSubmitCoroutine());
+                        if (!isCoroutinePlay)
+                        {
+                            StartCoroutine(enemyController.PlaceSubmitCoroutine());
+                        }
                     }
                     cardInHand1.transform.position = clickedGameObjectInHand.transform.position;
                     isCardMovingToPlace = false;
@@ -235,25 +243,35 @@ public class PlayerController : MonoBehaviour
                 {
                     if (clickedGameObjectInHand.name == "Place1")
                     {
-                        if (!placeController.IsPutPlace1OK(hand1Number))
+                        if (!placeController.IsPutPlace1OK(hand2Number))
                         {
                             movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
                             isCardMovingToPlace = false;
+                            enemyController.cannotSubmit = true;
+                            enemyController.JudgeCannotSubmit();
                             return;
                         }
                         placeController.SetPlace1Before(hand2Number);
-                        StartCoroutine(enemyController.PlaceSubmitCoroutine());
+                        if (!isCoroutinePlay)
+                        {
+                            StartCoroutine(enemyController.PlaceSubmitCoroutine());
+                        }
                     }
                     if (clickedGameObjectInHand.name == "Place2")
                     {
-                        if (!placeController.IsPutPlace2OK(hand1Number))
+                        if (!placeController.IsPutPlace2OK(hand2Number))
                         {
                             movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
                             isCardMovingToPlace = false;
+                            enemyController.cannotSubmit = true;
+                            enemyController.JudgeCannotSubmit();
                             return;
                         }
                         placeController.SetPlace2Before(hand2Number);
-                        StartCoroutine(enemyController.PlaceSubmitCoroutine());
+                        if (!isCoroutinePlay)
+                        {
+                            StartCoroutine(enemyController.PlaceSubmitCoroutine());
+                        }
                     }
                     cardInHand2.transform.position = clickedGameObjectInHand.transform.position;
                     isCardMovingToPlace = false;
@@ -264,25 +282,35 @@ public class PlayerController : MonoBehaviour
                 {
                     if (clickedGameObjectInHand.name == "Place1")
                     {
-                        if (!placeController.IsPutPlace1OK(hand1Number))
+                        if (!placeController.IsPutPlace1OK(hand3Number))
                         {
                             movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
                             isCardMovingToPlace = false;
+                            enemyController.cannotSubmit = true;
+                            enemyController.JudgeCannotSubmit();
                             return;
                         }
                         placeController.SetPlace1Before(hand3Number);
-                        StartCoroutine(enemyController.PlaceSubmitCoroutine());
+                        if (!isCoroutinePlay)
+                        {
+                            StartCoroutine(enemyController.PlaceSubmitCoroutine());
+                        }
                     }
                     if (clickedGameObjectInHand.name == "Place2")
                     {
-                        if (!placeController.IsPutPlace2OK(hand1Number))
+                        if (!placeController.IsPutPlace2OK(hand3Number))
                         {
                             movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
                             isCardMovingToPlace = false;
+                            enemyController.cannotSubmit = true;
+                            enemyController.JudgeCannotSubmit();
                             return;
                         }
                         placeController.SetPlace2Before(hand3Number);
-                        StartCoroutine(enemyController.PlaceSubmitCoroutine());
+                        if (!isCoroutinePlay)
+                        {
+                            StartCoroutine(enemyController.PlaceSubmitCoroutine());
+                        }
                     }
                     cardInHand3.transform.position = clickedGameObjectInHand.transform.position;
                     isCardMovingToPlace = false;
@@ -293,25 +321,35 @@ public class PlayerController : MonoBehaviour
                 {
                     if (clickedGameObjectInHand.name == "Place1")
                     {
-                        if (!placeController.IsPutPlace1OK(hand1Number))
+                        if (!placeController.IsPutPlace1OK(hand4Number))
                         {
                             movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
                             isCardMovingToPlace = false;
+                            enemyController.cannotSubmit = true;
+                            enemyController.JudgeCannotSubmit();
                             return;
                         }
-                        placeController.SetPlace1Before(hand3Number);
-                        StartCoroutine(enemyController.PlaceSubmitCoroutine());
+                        placeController.SetPlace1Before(hand4Number);
+                        if (!isCoroutinePlay)
+                        {
+                            StartCoroutine(enemyController.PlaceSubmitCoroutine());
+                        }
                     }
                     if (clickedGameObjectInHand.name == "Place2")
                     {
-                        if (!placeController.IsPutPlace2OK(hand1Number))
+                        if (!placeController.IsPutPlace2OK(hand4Number))
                         {
                             movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
                             isCardMovingToPlace = false;
+                            enemyController.cannotSubmit = true;
+                            enemyController.JudgeCannotSubmit();
                             return;
                         }
                         placeController.SetPlace2Before(hand4Number);
-                        StartCoroutine(enemyController.PlaceSubmitCoroutine());
+                        if (!isCoroutinePlay)
+                        {
+                            StartCoroutine(enemyController.PlaceSubmitCoroutine());
+                        }
                     }
                     cardInHand4.transform.position = clickedGameObjectInHand.transform.position;
                     isCardMovingToPlace = false;
@@ -360,6 +398,49 @@ public class PlayerController : MonoBehaviour
         playerCardsController.PlayerCards.RemoveAt(0);
         isCardMovingToHand = false;
         pastClickedGameObject.transform.position = clickedGameObject.transform.position;
+    }
+
+    public void JudgeCannotSubmit()
+    {
+        if (isHand1Full == false || isHand2Full == false || isHand3Full == false || isHand4Full == false) return;
+        if (placeController.IsPutPlace1OK(hand1Number))
+        {
+
+        }
+        else if (placeController.IsPutPlace1OK(hand2Number))
+        {
+
+        }
+        else if (placeController.IsPutPlace1OK(hand3Number))
+        {
+
+        }
+        else if (placeController.IsPutPlace1OK(hand4Number))
+        {
+
+        }
+        else if (placeController.IsPutPlace2OK(hand1Number))
+        {
+
+        }
+        else if (placeController.IsPutPlace2OK(hand2Number))
+        {
+
+        }
+        else if (placeController.IsPutPlace2OK(hand3Number))
+        {
+
+        }
+        else if (placeController.IsPutPlace2OK(hand4Number))
+        {
+
+        }
+        else
+        {
+            cannotSubmit = false;
+            gameManager.SubmitWhenStuck();
+            Debug.Log("playerStuck");
+        }
     }
 
     //if (HandManager.CheckAndPutCurrentHand())

@@ -11,7 +11,7 @@ public class PlayerCardsController : MonoBehaviour
     {
         for (int i = 0; i < PlayerCards.Count; i++)
         {
-            Debug.Log("player" + i + ":" + PlayerCards[i][0] + "," + PlayerCards[i][1]);
+            /*Debug.Log("player" + i + ":" + PlayerCards[i][0] + "," + PlayerCards[i][1]);*/
         }
     }
 

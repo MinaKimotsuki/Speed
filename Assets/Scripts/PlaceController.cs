@@ -21,6 +21,7 @@ public class PlaceController : MonoBehaviour
 
     public bool IsPutPlace1OK(int place1now)
     {
+        /*Debug.Log("place1before" + place1Before);*/
         if (place1now + 1 == place1Before || place1now - 1 == place1Before)
         {
             return true;
@@ -37,6 +38,7 @@ public class PlaceController : MonoBehaviour
 
     public bool IsPutPlace2OK(int place2now)
     {
+        /*Debug.Log("place2before" + place2Before);*/
         if (place2now + 1 == place2Before || place2now - 1 == place2Before)
         {
             return true;

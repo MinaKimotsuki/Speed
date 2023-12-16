@@ -968,12 +968,14 @@ MonoBehaviour:
   playerCardsController: {fileID: 2065388741}
   placeController: {fileID: 1234684882}
   enemyController: {fileID: 1583943987}
+  gameManager: {fileID: 1479822094}
   card: {fileID: 4581475758109077300, guid: f9273b87eafbed644b82c423127fa2de, type: 3}
   cards: {fileID: 4739924417366946122}
   hand1: {fileID: 349131413}
   hand2: {fileID: 2137099132}
   hand3: {fileID: 1590850044}
   hand4: {fileID: 180642841}
+  cannotSubmit: 1
 --- !u!4 &1144120667
 Transform:
   m_ObjectHideFlags: 0
@@ -1269,6 +1271,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCardsController: {fileID: 2065388741}
   enemyCardsController: {fileID: 85185115}
+  playerController: {fileID: 1144120666}
+  enemyController: {fileID: 1583943987}
   card: {fileID: 4581475758109077300, guid: f9273b87eafbed644b82c423127fa2de, type: 3}
   place1: {fileID: 1572338845}
   place2: {fileID: 646883476}
@@ -1415,6 +1419,9 @@ MonoBehaviour:
   card: {fileID: 4581475758109077300, guid: f9273b87eafbed644b82c423127fa2de, type: 3}
   enemyCardsController: {fileID: 85185115}
   placeController: {fileID: 1234684882}
+  gameManager: {fileID: 1479822094}
+  playerController: {fileID: 1144120666}
+  cannotSubmit: 1
 --- !u!4 &1583943988
 Transform:
   m_ObjectHideFlags: 0
