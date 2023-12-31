@@ -28,8 +28,7 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*StartCoroutine(AfterSubmitCoroutine());
-        StartCoroutine(PlaceSubmitCoroutine());*/
+        StartCoroutine(PlaceSubmitCoroutine());
     }
 
     IEnumerator FirstSubmitCoroutine()
@@ -54,10 +53,13 @@ public class EnemyController : MonoBehaviour
         handNumbers[i] = enemyCardsController.EnemyCards[0][0];
         isHandsFull[i] = true;
         enemyCardsController.EnemyCards.RemoveAt(0);
+        JudgeCannotSubmit();
+        gameManager.SubmitWhenStuck();
     }
 
     IEnumerator AfterSubmitCoroutine()
     {
+        handNotFull = 4;
         for (int i = 0; i< 4; i++)
         {
             if (isHandsFull[i] == false)
@@ -66,17 +68,18 @@ public class EnemyController : MonoBehaviour
             }
         }
         yield return new WaitForSeconds(10f);
-        if (handNotFull != 4)
-        {
-            AfterSubmit();
-        }
-        else
+        if (handNotFull == 4)
         {
             Debug.Log("c");
             isCoroutinePlay = false;
             cannotSubmit = false;
+            playerController.JudgeCannotSubmit();
             gameManager.SubmitWhenStuck();
             Debug.Log("enemyStuck");
+        }
+        else
+        {
+            AfterSubmit();
         }
     }
 
@@ -89,9 +92,9 @@ public class EnemyController : MonoBehaviour
         handNumbers[handNotFull] = enemyCardsController.EnemyCards[0][0];
         isHandsFull[handNotFull] = true;
         enemyCardsController.EnemyCards.RemoveAt(0);
-        handNotFull = 4;
         /*isFinishPlaceSubmit = false;*/
         StartCoroutine(PlaceSubmitCoroutine());
+        JudgeCannotSubmit();
     }
 
     public IEnumerator PlaceSubmitCoroutine()
@@ -115,6 +118,8 @@ public class EnemyController : MonoBehaviour
                 placeController.SetPlace1Before(handNumbers[i]);
                 playerController.cannotSubmit = true;
                 playerController.JudgeCannotSubmit();
+                Destroy(gameManager.placeSubmittedCard[0]);
+                gameManager.placeSubmittedCard[0] = instantiatedObject[i];
                 return;
             }
             else if (placeController.IsPutPlace2OK(handNumbers[i]))
@@ -125,6 +130,8 @@ public class EnemyController : MonoBehaviour
                 placeController.SetPlace2Before(handNumbers[i]);
                 playerController.cannotSubmit = true;
                 playerController.JudgeCannotSubmit();
+                Destroy(gameManager.placeSubmittedCard[1]);
+                gameManager.placeSubmittedCard[1] = instantiatedObject[i];
                 return;
             }
 
@@ -134,7 +141,7 @@ public class EnemyController : MonoBehaviour
     public void JudgeCannotSubmit()
     {
         if (isHandsFull[0] == false || isHandsFull[1] == false || isHandsFull[2] == false || isHandsFull[3] == false) return;
-        Debug.Log("a");
+        //Debug.Log("a");
         if (placeController.IsPutPlace1OK(handNumbers[0]))
         {
 

@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -41,6 +39,7 @@ public class PlayerController : MonoBehaviour
     int playerCardsNumber4;
     public bool cannotSubmit = true; //trueÅ®Ç≈Ç´ÇÈ falseÅ®Ç≈Ç´Ç»Ç¢
     public bool isCoroutinePlay = true;
+    GameObject[] handObjects = new GameObject[4];
 
 
     // Start is called before the first frame update
@@ -141,9 +140,11 @@ public class PlayerController : MonoBehaviour
             if (hit2d)
             {
                 clickedGameObject = hit2d.transform.gameObject;
+                Debug.Log(clickedGameObject.name);
                 if (clickedGameObject.name == "Hand1" && isHand1Full == false)
                 {
                     playerCardsNumber1 = playerCardsController.PlayerCards[0][0];
+                    handObjects[0] = pastClickedGameObject;
                     PlaceCardToHand(pastClickedGameObject);
                     isHand1Full = true;
                     cardInHand1 = pastClickedGameObject;
@@ -152,6 +153,7 @@ public class PlayerController : MonoBehaviour
                 else if (clickedGameObject.name == "Hand2" && isHand2Full == false)
                 {
                     playerCardsNumber2 = playerCardsController.PlayerCards[0][0];
+                    handObjects[1] = pastClickedGameObject;
                     PlaceCardToHand(pastClickedGameObject);
                     isHand2Full = true;
                     cardInHand2 = pastClickedGameObject;
@@ -160,6 +162,7 @@ public class PlayerController : MonoBehaviour
                 else if (clickedGameObject.name == "Hand3" && isHand3Full == false)
                 {
                     playerCardsNumber3 = playerCardsController.PlayerCards[0][0];
+                    handObjects[2] = pastClickedGameObject;
                     PlaceCardToHand(pastClickedGameObject);
                     isHand3Full = true;
                     cardInHand3 = pastClickedGameObject;
@@ -168,6 +171,7 @@ public class PlayerController : MonoBehaviour
                 else if (clickedGameObject.name == "Hand4" && isHand4Full == false)
                 {
                     playerCardsNumber4 = playerCardsController.PlayerCards[0][0];
+                    handObjects[3] = pastClickedGameObject;
                     PlaceCardToHand(pastClickedGameObject);
                     isHand4Full = true;
                     cardInHand4 = pastClickedGameObject;
@@ -207,12 +211,16 @@ public class PlayerController : MonoBehaviour
                         if (!placeController.IsPutPlace1OK(hand1Number))
                         {
                             movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                            movingCard.GetComponent<Card>().isSubmitted = true;
                             isCardMovingToPlace = false;
                             enemyController.cannotSubmit = true;
                             enemyController.JudgeCannotSubmit();
+                            movingCard.GetComponent<Card>().isSubmitted = true;
                             return;
                         }
                         placeController.SetPlace1Before(hand1Number);
+                        Destroy(gameManager.placeSubmittedCard[0]);
+                        gameManager.placeSubmittedCard[0] = movingCard;
                         if (!isCoroutinePlay)
                         {
                             StartCoroutine(enemyController.PlaceSubmitCoroutine());
@@ -223,12 +231,16 @@ public class PlayerController : MonoBehaviour
                         if (!placeController.IsPutPlace2OK(hand1Number))    
                         {
                             movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                            movingCard.GetComponent<Card>().isSubmitted = true;
                             isCardMovingToPlace = false;
                             enemyController.cannotSubmit = true;
                             enemyController.JudgeCannotSubmit();
+                            movingCard.GetComponent<Card>().isSubmitted = true;
                             return;
                         }
                         placeController.SetPlace2Before(hand1Number);
+                        Destroy(gameManager.placeSubmittedCard[1]);
+                        gameManager.placeSubmittedCard[1] = movingCard;
                         if (!isCoroutinePlay)
                         {
                             StartCoroutine(enemyController.PlaceSubmitCoroutine());
@@ -246,12 +258,16 @@ public class PlayerController : MonoBehaviour
                         if (!placeController.IsPutPlace1OK(hand2Number))
                         {
                             movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                            movingCard.GetComponent<Card>().isSubmitted = true;
                             isCardMovingToPlace = false;
                             enemyController.cannotSubmit = true;
                             enemyController.JudgeCannotSubmit();
                             return;
                         }
                         placeController.SetPlace1Before(hand2Number);
+                        Destroy(gameManager.placeSubmittedCard[0]);
+                        gameManager.placeSubmittedCard[0] = movingCard;
+                        movingCard.GetComponent<Card>().isSubmitted = true;
                         if (!isCoroutinePlay)
                         {
                             StartCoroutine(enemyController.PlaceSubmitCoroutine());
@@ -262,12 +278,16 @@ public class PlayerController : MonoBehaviour
                         if (!placeController.IsPutPlace2OK(hand2Number))
                         {
                             movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                            movingCard.GetComponent<Card>().isSubmitted = true;
                             isCardMovingToPlace = false;
                             enemyController.cannotSubmit = true;
                             enemyController.JudgeCannotSubmit();
                             return;
                         }
                         placeController.SetPlace2Before(hand2Number);
+                        Destroy(gameManager.placeSubmittedCard[1]);
+                        gameManager.placeSubmittedCard[1] = movingCard;
+                        movingCard.GetComponent<Card>().isSubmitted = true;
                         if (!isCoroutinePlay)
                         {
                             StartCoroutine(enemyController.PlaceSubmitCoroutine());
@@ -285,12 +305,16 @@ public class PlayerController : MonoBehaviour
                         if (!placeController.IsPutPlace1OK(hand3Number))
                         {
                             movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                            movingCard.GetComponent<Card>().isSubmitted = true;
                             isCardMovingToPlace = false;
                             enemyController.cannotSubmit = true;
                             enemyController.JudgeCannotSubmit();
                             return;
                         }
                         placeController.SetPlace1Before(hand3Number);
+                        Destroy(gameManager.placeSubmittedCard[0]);
+                        gameManager.placeSubmittedCard[0] = movingCard;
+                        movingCard.GetComponent<Card>().isSubmitted = true;
                         if (!isCoroutinePlay)
                         {
                             StartCoroutine(enemyController.PlaceSubmitCoroutine());
@@ -301,12 +325,16 @@ public class PlayerController : MonoBehaviour
                         if (!placeController.IsPutPlace2OK(hand3Number))
                         {
                             movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                            movingCard.GetComponent<Card>().isSubmitted = true;
                             isCardMovingToPlace = false;
                             enemyController.cannotSubmit = true;
                             enemyController.JudgeCannotSubmit();
                             return;
                         }
                         placeController.SetPlace2Before(hand3Number);
+                        Destroy(gameManager.placeSubmittedCard[1]);
+                        gameManager.placeSubmittedCard[1] = movingCard;
+                        movingCard.GetComponent<Card>().isSubmitted = true;
                         if (!isCoroutinePlay)
                         {
                             StartCoroutine(enemyController.PlaceSubmitCoroutine());
@@ -324,12 +352,16 @@ public class PlayerController : MonoBehaviour
                         if (!placeController.IsPutPlace1OK(hand4Number))
                         {
                             movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                            movingCard.GetComponent<Card>().isSubmitted = true;
                             isCardMovingToPlace = false;
                             enemyController.cannotSubmit = true;
                             enemyController.JudgeCannotSubmit();
                             return;
                         }
                         placeController.SetPlace1Before(hand4Number);
+                        Destroy(gameManager.placeSubmittedCard[0]);
+                        gameManager.placeSubmittedCard[0] = movingCard;
+                        movingCard.GetComponent<Card>().isSubmitted = true;
                         if (!isCoroutinePlay)
                         {
                             StartCoroutine(enemyController.PlaceSubmitCoroutine());
@@ -340,12 +372,16 @@ public class PlayerController : MonoBehaviour
                         if (!placeController.IsPutPlace2OK(hand4Number))
                         {
                             movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
+                            movingCard.GetComponent<Card>().isSubmitted = true;
                             isCardMovingToPlace = false;
                             enemyController.cannotSubmit = true;
                             enemyController.JudgeCannotSubmit();
                             return;
                         }
                         placeController.SetPlace2Before(hand4Number);
+                        Destroy(gameManager.placeSubmittedCard[1]);
+                        gameManager.placeSubmittedCard[1] = movingCard;
+                        movingCard.GetComponent<Card>().isSubmitted = true;
                         if (!isCoroutinePlay)
                         {
                             StartCoroutine(enemyController.PlaceSubmitCoroutine());
