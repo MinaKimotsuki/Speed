@@ -17,7 +17,7 @@ public class EnemyController : MonoBehaviour
     /*bool isFinishAfterSubmit = true;*/
     /*bool isFinishPlaceSubmit = false;*/
     public bool cannotSubmit = true; //trueÅ®Ç≈Ç´ÇÈ falseÅ®Ç≈Ç´Ç»Ç¢
-    public bool isCoroutinePlay = true;
+    public bool isCoroutinePlay = false;
 
     // Start is called before the first frame update
     void Start()
@@ -95,15 +95,21 @@ public class EnemyController : MonoBehaviour
         /*isFinishPlaceSubmit = false;*/
         StartCoroutine(PlaceSubmitCoroutine());
         JudgeCannotSubmit();
+        playerController.JudgeCannotSubmit();
+        gameManager.SubmitWhenStuck();
     }
 
     public IEnumerator PlaceSubmitCoroutine()
     {
-        if (isHandsFull[0] == true && isHandsFull[1] == true && isHandsFull[2] == true && isHandsFull[3] == true)
+        if (isHandsFull[0] == true && isHandsFull[1] == true && isHandsFull[2] == true && isHandsFull[3] == true && isCoroutinePlay == false)
         {
             isCoroutinePlay = true;
             yield return new WaitForSeconds(10f);
             PlaceSubmit();
+        }
+        else
+        {
+            isCoroutinePlay = false;
         }
     }
     void PlaceSubmit()
@@ -179,7 +185,6 @@ public class EnemyController : MonoBehaviour
         else
         {
             cannotSubmit = false;
-            gameManager.SubmitWhenStuck();
             Debug.Log("enemyStuck");
         }
     }

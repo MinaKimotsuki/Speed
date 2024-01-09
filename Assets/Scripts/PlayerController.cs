@@ -153,6 +153,9 @@ public class PlayerController : MonoBehaviour
                     isHand1Full = true;
                     cardInHand1 = pastClickedGameObject;
                     JudgeCannotSubmit();
+                    enemyController.JudgeCannotSubmit();
+                    gameManager.SubmitWhenStuck();
+                    Debug.Log("a");
                 }
                 else if (clickedGameObject.name == "Hand2" && isHand2Full == false)
                 {
@@ -162,6 +165,8 @@ public class PlayerController : MonoBehaviour
                     isHand2Full = true;
                     cardInHand2 = pastClickedGameObject;
                     JudgeCannotSubmit();
+                    enemyController.JudgeCannotSubmit();
+                    gameManager.SubmitWhenStuck();
                 }
                 else if (clickedGameObject.name == "Hand3" && isHand3Full == false)
                 {
@@ -171,6 +176,8 @@ public class PlayerController : MonoBehaviour
                     isHand3Full = true;
                     cardInHand3 = pastClickedGameObject;
                     JudgeCannotSubmit();
+                    enemyController.JudgeCannotSubmit();
+                    gameManager.SubmitWhenStuck();
                 }
                 else if (clickedGameObject.name == "Hand4" && isHand4Full == false)
                 {
@@ -180,6 +187,8 @@ public class PlayerController : MonoBehaviour
                     isHand4Full = true;
                     cardInHand4 = pastClickedGameObject;
                     JudgeCannotSubmit();
+                    enemyController.JudgeCannotSubmit();
+                    gameManager.SubmitWhenStuck();
                 }
                 else
                 {
@@ -220,6 +229,7 @@ public class PlayerController : MonoBehaviour
                             enemyController.cannotSubmit = true;
                             enemyController.JudgeCannotSubmit();
                             movingCard.GetComponent<Card>().isSubmitted = true;
+                            StartCoroutine(enemyController.PlaceSubmitCoroutine());
                             return;
                         }
                         placeController.SetPlace1Before(hand1Number);
@@ -478,7 +488,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             cannotSubmit = false;
-            gameManager.SubmitWhenStuck();
             Debug.Log("playerStuck");
         }
     }
