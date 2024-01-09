@@ -92,6 +92,7 @@ public class PlayerController : MonoBehaviour
                 nextObjectToHand = cardInHand1;
                 movingCard = cardInHand1;
                 hand1Number = playerCardsNumber1;
+                gameManager.SetSortingOrder(cardInHand1);
             }
             if (hit2d.collider.gameObject.name == "Hand2")
             {
@@ -101,6 +102,7 @@ public class PlayerController : MonoBehaviour
                 nextObjectToHand = cardInHand2;
                 movingCard = cardInHand2;
                 hand2Number = playerCardsNumber2;
+                gameManager.SetSortingOrder(cardInHand2);
             }
             if (hit2d.collider.gameObject.name == "Hand3")
             {
@@ -110,6 +112,7 @@ public class PlayerController : MonoBehaviour
                 nextObjectToHand = cardInHand3;
                 movingCard = cardInHand3;
                 hand3Number = playerCardsNumber3;
+                gameManager.SetSortingOrder(cardInHand3);
             }
             if (hit2d.collider.gameObject.name == "Hand4")
             {
@@ -119,6 +122,7 @@ public class PlayerController : MonoBehaviour
                 nextObjectToHand = cardInHand4;
                 movingCard = cardInHand4;
                 hand4Number = playerCardsNumber4;
+                gameManager.SetSortingOrder(cardInHand4);
             }
         }
     }

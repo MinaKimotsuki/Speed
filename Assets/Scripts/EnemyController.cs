@@ -28,7 +28,7 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        StartCoroutine(PlaceSubmitCoroutine());
+        //StartCoroutine(PlaceSubmitCoroutine());
     }
 
     IEnumerator FirstSubmitCoroutine()
@@ -112,6 +112,7 @@ public class EnemyController : MonoBehaviour
         {
             if (placeController.IsPutPlace1OK(handNumbers[i]))
             {
+                gameManager.SetSortingOrder(instantiatedObject[i]);
                 instantiatedObject[i].transform.position = new Vector3(-1, 0, 0);
                 isHandsFull[i] = false;
                 StartCoroutine(AfterSubmitCoroutine());
@@ -124,6 +125,7 @@ public class EnemyController : MonoBehaviour
             }
             else if (placeController.IsPutPlace2OK(handNumbers[i]))
             {
+                gameManager.SetSortingOrder(instantiatedObject[i]);
                 instantiatedObject[i].transform.position = new Vector3(1, 0, 0);
                 isHandsFull[i] = false;
                 StartCoroutine(AfterSubmitCoroutine());

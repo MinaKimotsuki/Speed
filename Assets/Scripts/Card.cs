@@ -12,7 +12,7 @@ public class Card : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    /*private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Card"))
         {
@@ -23,5 +23,5 @@ public class Card : MonoBehaviour
                 gameManager.SetSortingOrder(gameObject);
             }
         }
-    }
+    }*/
 }
