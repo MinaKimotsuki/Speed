@@ -21,7 +21,8 @@ public class PlaceController : MonoBehaviour
 
     public bool IsPutPlace1OK(int place1now)
     {
-        /*Debug.Log("place1before" + place1Before);*/
+        Debug.Log("place1now" + place1now);
+        Debug.Log("place1before" + place1Before);
         if (place1now + 1 == place1Before || place1now - 1 == place1Before)
         {
             return true;
@@ -55,11 +56,11 @@ public class PlaceController : MonoBehaviour
 
     public void SetPlace1Before(int place1before)
     {
-        place1Before = place1before;
+        this.place1Before = place1before;
     }
 
     public void SetPlace2Before(int place2before)
     {
-        place2Before = place2before;
+        this.place2Before = place2before;
     }
 }

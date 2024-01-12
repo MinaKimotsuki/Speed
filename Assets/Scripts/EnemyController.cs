@@ -97,11 +97,13 @@ public class EnemyController : MonoBehaviour
         JudgeCannotSubmit();
         playerController.JudgeCannotSubmit();
         gameManager.SubmitWhenStuck();
+        Debug.Log("ŒÄ‚Î‚ê‚½‚P");
     }
 
     public IEnumerator PlaceSubmitCoroutine()
     {
-        if (isHandsFull[0] == true && isHandsFull[1] == true && isHandsFull[2] == true && isHandsFull[3] == true && isCoroutinePlay == false)
+        Debug.Log("ŒÄ‚Î‚ê‚½‚Q");
+        if (isHandsFull[0] == true && isHandsFull[1] == true && isHandsFull[2] == true && isHandsFull[3] == true)
         {
             isCoroutinePlay = true;
             yield return new WaitForSeconds(10f);
