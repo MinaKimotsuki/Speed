@@ -111,6 +111,9 @@ public class GameManager : MonoBehaviour
         placeController.SetPlace2Before(enemyCardsController.EnemyCards[0][0]);
         playerCardsController.PlayerCards.RemoveAt(0);
         enemyCardsController.EnemyCards.RemoveAt(0);
+        playerController.JudgeCannotSubmit();
+        enemyController.JudgeCannotSubmit();
+        SubmitWhenStuck();
         if (!enemyController.isCoroutinePlay)
         {
             enemyController.StartCoroutine(enemyController.PlaceSubmitCoroutine());

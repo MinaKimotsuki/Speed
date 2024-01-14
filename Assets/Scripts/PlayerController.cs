@@ -81,15 +81,10 @@ public class PlayerController : MonoBehaviour
                 if (isHand1Full == false || isHand2Full == false || isHand3Full == false || isHand4Full == false)
                 {
                     clickedGameObject = Instantiate(card, cards.transform.position, Quaternion.identity);
-                    /*playerCardsController.CardObjects.Add(clickedGameObject);
-                    playerCardsController.PutCardsNumber();*/
-                    /*clickedGameObject.GetComponent<SpriteRenderer>().sortingOrder = orderInRayer;
-                    clickedGameObject.transform.GetChild(0).GetComponent<MeshRenderer>().sortingOrder = orderInRayer;
-                    clickedGameObject.transform.GetChild(1).GetComponent<MeshRenderer>().sortingOrder = orderInRayer;
-                    orderInRayer++;*/
                     clickedGameObject.transform.GetChild(0).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][1].ToString();
                     clickedGameObject.transform.GetChild(1).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][0].ToString();
                     isCardMovingToHand = true;
+                    JudgeIfGameFinish();
                 }
             }
             if (hit2d.collider.gameObject.name == "Hand1")
@@ -152,7 +147,6 @@ public class PlayerController : MonoBehaviour
             if (hit2d)
             {
                 clickedGameObject = hit2d.transform.gameObject;
-                Debug.Log(clickedGameObject.name);
                 if (clickedGameObject.name == "Hand1" && isHand1Full == false)
                 {
                     playerCardsNumber1 = playerCardsController.PlayerCards[0][0];
@@ -163,7 +157,7 @@ public class PlayerController : MonoBehaviour
                     JudgeCannotSubmit();
                     enemyController.JudgeCannotSubmit();
                     gameManager.SubmitWhenStuck();
-                    Debug.Log("a");
+                    Debug.Log("c");
                 }
                 else if (clickedGameObject.name == "Hand2" && isHand2Full == false)
                 {
@@ -175,6 +169,7 @@ public class PlayerController : MonoBehaviour
                     JudgeCannotSubmit();
                     enemyController.JudgeCannotSubmit();
                     gameManager.SubmitWhenStuck();
+                    Debug.Log("c");
                 }
                 else if (clickedGameObject.name == "Hand3" && isHand3Full == false)
                 {
@@ -186,6 +181,7 @@ public class PlayerController : MonoBehaviour
                     JudgeCannotSubmit();
                     enemyController.JudgeCannotSubmit();
                     gameManager.SubmitWhenStuck();
+                    Debug.Log("c");
                 }
                 else if (clickedGameObject.name == "Hand4" && isHand4Full == false)
                 {
@@ -197,6 +193,7 @@ public class PlayerController : MonoBehaviour
                     JudgeCannotSubmit();
                     enemyController.JudgeCannotSubmit();
                     gameManager.SubmitWhenStuck();
+                    Debug.Log("c");
                 }
                 else
                 {
@@ -458,10 +455,16 @@ public class PlayerController : MonoBehaviour
         pastClickedGameObject.transform.position = clickedGameObject.transform.position;
     }
 
+    void JudgeIfGameFinish()
+    {
+        Debug.Log(playerCardsController.PlayerCards.Count);
+        if (playerCardsController.PlayerCards.Count != 0) return;
+    }
+
     public void JudgeCannotSubmit()
     {
         if (isHand1Full == false || isHand2Full == false || isHand3Full == false || isHand4Full == false) return;
-
+        Debug.Log("JudgeCannotSubmit");
         if (placeController.IsPutPlace1OK(hand1Number))
         {
 

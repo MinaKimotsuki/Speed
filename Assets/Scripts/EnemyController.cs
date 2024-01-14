@@ -70,12 +70,12 @@ public class EnemyController : MonoBehaviour
         yield return new WaitForSeconds(10f);
         if (handNotFull == 4)
         {
-            Debug.Log("c");
+            /*Debug.Log("c");
             isCoroutinePlay = false;
             cannotSubmit = false;
             playerController.JudgeCannotSubmit();
             gameManager.SubmitWhenStuck();
-            Debug.Log("enemyStuck");
+            Debug.Log("enemyStuck");*/
         }
         else
         {
@@ -97,12 +97,12 @@ public class EnemyController : MonoBehaviour
         JudgeCannotSubmit();
         playerController.JudgeCannotSubmit();
         gameManager.SubmitWhenStuck();
-        Debug.Log("ŒÄ‚Î‚ê‚½‚P");
+        /*Debug.Log("ŒÄ‚Î‚ê‚½‚P");*/
     }
 
     public IEnumerator PlaceSubmitCoroutine()
     {
-        Debug.Log("ŒÄ‚Î‚ê‚½‚Q");
+        /*Debug.Log("ŒÄ‚Î‚ê‚½‚Q");*/
         if (isHandsFull[0] == true && isHandsFull[1] == true && isHandsFull[2] == true && isHandsFull[3] == true)
         {
             isCoroutinePlay = true;
