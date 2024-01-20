@@ -975,7 +975,29 @@ MonoBehaviour:
   hand2: {fileID: 2137099132}
   hand3: {fileID: 1590850044}
   hand4: {fileID: 180642841}
+  isHand1Full: 0
+  isHand2Full: 0
+  isHand3Full: 0
+  isHand4Full: 0
+  cardInHand1: {fileID: 0}
+  cardInHand2: {fileID: 0}
+  cardInHand3: {fileID: 0}
+  cardInHand4: {fileID: 0}
+  playerCardsNumber1: 0
+  playerCardsNumber2: 0
+  playerCardsNumber3: 0
+  playerCardsNumber4: 0
   cannotSubmit: 1
+  isCoroutinePlay: 1
+  isPlace1andHand1OK: 0
+  isPlace2andHand1OK: 0
+  isPlace1andHand2OK: 0
+  isPlace2andHand2OK: 0
+  isPlace1andHand3OK: 0
+  isPlace2andHand3OK: 0
+  isPlace1andHand4OK: 0
+  isPlace2andHand4OK: 0
+  isCardsFinish: 0
 --- !u!4 &1144120667
 Transform:
   m_ObjectHideFlags: 0
@@ -1277,6 +1299,9 @@ MonoBehaviour:
   place1: {fileID: 1572338845}
   place2: {fileID: 646883476}
   placeController: {fileID: 1234684882}
+  placeSubmittedCard:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &1572338845
 GameObject:
   m_ObjectHideFlags: 0
@@ -1417,11 +1442,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   card: {fileID: 4581475758109077300, guid: f9273b87eafbed644b82c423127fa2de, type: 3}
+  cards: {fileID: 116665977}
   enemyCardsController: {fileID: 85185115}
   placeController: {fileID: 1234684882}
   gameManager: {fileID: 1479822094}
   playerController: {fileID: 1144120666}
+  handNumbers: 00000000000000000000000000000000
+  instantiatedObject:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   cannotSubmit: 1
+  isCoroutinePlay: 0
+  isHandFull: 00000000
+  isPlace1andHand1OK: 0
+  isPlace2andHand1OK: 0
+  isPlace1andHand2OK: 0
+  isPlace2andHand2OK: 0
+  isPlace1andHand3OK: 0
+  isPlace2andHand3OK: 0
+  isPlace1andHand4OK: 0
+  isPlace2andHand4OK: 0
+  isCardsFinish: 0
 --- !u!4 &1583943988
 Transform:
   m_ObjectHideFlags: 0

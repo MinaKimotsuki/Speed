@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] PlaceController placeController;
     int sortingOrder = 1;
     public GameObject[] placeSubmittedCard = new GameObject[2];
+    public bool isGameFinish = false;
 
     // Start is called before the first frame update
     void Awake()
@@ -75,19 +77,49 @@ public class GameManager : MonoBehaviour
 
     public void SubmitWhenStuck()
     {
-        /*Debug.Log(playerController.cannotSubmit);
-        Debug.Log(enemyController.cannotSubmit);*/
+        if (isGameFinish) return;
+        Debug.Log(playerController.cannotSubmit);
+        Debug.Log(enemyController.cannotSubmit);
         if (playerController.cannotSubmit == true || enemyController.cannotSubmit == true) return;
-        Submit();
+        if (!playerController.isCardsFinish && !enemyController.isCardsFinish)
+        {
+            Submit();
+        }
+        else if (playerController.isCardsFinish && !enemyController.isCardsFinish)
+        {
+            PlayerLastSubmit();
+            EnemySubmit();
+        }
+        else if (!playerController.isCardsFinish && enemyController.isCardsFinish)
+        {
+            PlayerSubmit();
+            EnemyLastSubmit();
+        }
+        else if (playerController.isCardsFinish && enemyController.isCardsFinish)
+        {
+            PlayerLastSubmit();
+            EnemyLastSubmit();
+        }
         Debug.Log("bothStuck");
+        playerController.JudgeIfCardsFinish();
+        enemyController.JudgeIfCardsFinish();
         playerController.cannotSubmit = true;
         enemyController.cannotSubmit = true;
+        playerController.JudgeCannotSubmit();
+        enemyController.JudgeCannotSubmit();
+        SubmitWhenStuck();
+        if (!enemyController.isCoroutinePlay)
+        {
+            StartCoroutine(enemyController.PlaceSubmitCoroutine());
+        }
     }
 
     void Submit()
     {
         GameObject firstSubmitedCard1 = Instantiate(card, place1.transform.position, Quaternion.identity);
         GameObject firstSubmitedCard2 = Instantiate(card, place2.transform.position, Quaternion.Euler(0, 0, 180));
+        /*Debug.Log(playerCardsController.PlayerCards.Count);
+        Debug.Log(enemyCardsController.EnemyCards.Count);*/
         firstSubmitedCard1.transform.GetChild(0).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][1].ToString();
         firstSubmitedCard1.transform.GetChild(1).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][0].ToString();
         firstSubmitedCard2.transform.GetChild(0).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][1].ToString();
@@ -111,12 +143,155 @@ public class GameManager : MonoBehaviour
         placeController.SetPlace2Before(enemyCardsController.EnemyCards[0][0]);
         playerCardsController.PlayerCards.RemoveAt(0);
         enemyCardsController.EnemyCards.RemoveAt(0);
-        playerController.JudgeCannotSubmit();
-        enemyController.JudgeCannotSubmit();
-        SubmitWhenStuck();
-        if (!enemyController.isCoroutinePlay)
+    }
+
+    void PlayerSubmit()
+    {
+        GameObject firstSubmitedCard1 = Instantiate(card, place1.transform.position, Quaternion.identity);
+        /*Debug.Log(playerCardsController.PlayerCards.Count);
+        Debug.Log(enemyCardsController.EnemyCards.Count);*/
+        firstSubmitedCard1.transform.GetChild(0).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][1].ToString();
+        firstSubmitedCard1.transform.GetChild(1).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][0].ToString();
+        firstSubmitedCard1.GetComponent<Card>().isSubmitted = true;
+        SetSortingOrder(firstSubmitedCard1);
+        if (placeSubmittedCard[0] != null)
         {
-            enemyController.StartCoroutine(enemyController.PlaceSubmitCoroutine());
+            Destroy(placeSubmittedCard[0]);
+        }
+        placeSubmittedCard[0] = firstSubmitedCard1;
+        /*Debug.Log(playerCardsController.PlayerCards[0][0]);*/
+        placeController.SetPlace1Before(playerCardsController.PlayerCards[0][0]);
+        playerCardsController.PlayerCards.RemoveAt(0);
+    }
+
+    void EnemySubmit()
+    {
+        GameObject firstSubmitedCard2 = Instantiate(card, place2.transform.position, Quaternion.Euler(0, 0, 180));
+        /*Debug.Log(playerCardsController.PlayerCards.Count);
+        Debug.Log(enemyCardsController.EnemyCards.Count);*/
+        firstSubmitedCard2.transform.GetChild(0).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][1].ToString();
+        firstSubmitedCard2.transform.GetChild(1).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][0].ToString();
+        firstSubmitedCard2.GetComponent<Card>().isSubmitted = true;
+        SetSortingOrder(firstSubmitedCard2);
+        if (placeSubmittedCard[1] != null)
+        {
+            Destroy(placeSubmittedCard[1]);
+        }
+        placeSubmittedCard[1] = firstSubmitedCard2;
+        /*Debug.Log(playerCardsController.PlayerCards[0][0]);*/
+        placeController.SetPlace2Before(enemyCardsController.EnemyCards[0][0]);
+        enemyCardsController.EnemyCards.RemoveAt(0);
+    }
+
+    void PlayerLastSubmit()
+    {
+        if (playerController.isHand1Full)
+        {
+            playerController.cardInHand1.transform.position = place1.transform.position;
+            playerController.cardInHand1.GetComponent<Card>().isSubmitted = true;
+            SetSortingOrder(playerController.cardInHand1);
+            if (placeSubmittedCard[0] != null)
+            {
+                Destroy(placeSubmittedCard[0]);
+            }
+            placeSubmittedCard[0] = playerController.cardInHand1;
+            placeController.SetPlace1Before(playerController.playerCardsNumber1);
+            playerController.isHand1Full = false;
+            playerController.JudgeIfGameFinish();
+        }
+        else if (playerController.isHand2Full)
+        {
+            playerController.cardInHand2.transform.position = place1.transform.position;
+            playerController.cardInHand2.GetComponent<Card>().isSubmitted = true;
+            SetSortingOrder(playerController.cardInHand2);
+            if (placeSubmittedCard[0] != null)
+            {
+                Destroy(placeSubmittedCard[0]);
+            }
+            placeSubmittedCard[0] = playerController.cardInHand2;
+            placeController.SetPlace1Before(playerController.playerCardsNumber2);
+            playerController.isHand2Full = false;
+            playerController.JudgeIfGameFinish();
+        }
+        else if (playerController.isHand3Full)
+        {
+            playerController.cardInHand3.transform.position = place1.transform.position;
+            playerController.cardInHand3.GetComponent<Card>().isSubmitted = true;
+            SetSortingOrder(playerController.cardInHand3);
+            if (placeSubmittedCard[0] != null)
+            {
+                Destroy(placeSubmittedCard[0]);
+            }
+            placeSubmittedCard[0] = playerController.cardInHand3;
+            placeController.SetPlace1Before(playerController.playerCardsNumber3);
+            playerController.isHand3Full = false;
+            playerController.JudgeIfGameFinish();
+        }
+        else if (playerController.isHand4Full)
+        {
+            playerController.cardInHand4.transform.position = place1.transform.position;
+            playerController.cardInHand4.GetComponent<Card>().isSubmitted = true;
+            SetSortingOrder(playerController.cardInHand4);
+            if (placeSubmittedCard[0] != null)
+            {
+                Destroy(placeSubmittedCard[0]);
+            }
+            placeSubmittedCard[0] = playerController.cardInHand4;
+            placeController.SetPlace1Before(playerController.playerCardsNumber4);
+            playerController.isHand4Full = false;
+            playerController.JudgeIfGameFinish();
+        }
+    }
+
+    void EnemyLastSubmit()
+    {
+        if (enemyController.isHandFull[0])
+        {
+            enemyController.instantiatedObject[0].transform.position = place2.transform.position;
+            enemyController.instantiatedObject[0].GetComponent<Card>().isSubmitted = true;
+            SetSortingOrder(enemyController.instantiatedObject[0]);
+            if (placeSubmittedCard[1] != null)
+            {
+                Destroy(placeSubmittedCard[1]);
+            }
+            placeSubmittedCard[1] = enemyController.instantiatedObject[0];
+            placeController.SetPlace2Before(enemyController.handNumbers[0]);
+        }
+        else if (playerController.isHand2Full)
+        {
+            enemyController.instantiatedObject[1].transform.position = place2.transform.position;
+            enemyController.instantiatedObject[1].GetComponent<Card>().isSubmitted = true;
+            SetSortingOrder(enemyController.instantiatedObject[1]);
+            if (placeSubmittedCard[1] != null)
+            {
+                Destroy(placeSubmittedCard[1]);
+            }
+            placeSubmittedCard[1] = enemyController.instantiatedObject[1];
+            placeController.SetPlace2Before(enemyController.handNumbers[1]);
+        }
+        else if (playerController.isHand3Full)
+        {
+            enemyController.instantiatedObject[2].transform.position = place2.transform.position;
+            enemyController.instantiatedObject[2].GetComponent<Card>().isSubmitted = true;
+            SetSortingOrder(enemyController.instantiatedObject[2]);
+            if (placeSubmittedCard[1] != null)
+            {
+                Destroy(placeSubmittedCard[1]);
+            }
+            placeSubmittedCard[1] = enemyController.instantiatedObject[2];
+            placeController.SetPlace2Before(enemyController.handNumbers[2]);
+        }
+        else if (playerController.isHand4Full)
+        {
+            enemyController.instantiatedObject[3].transform.position = place2.transform.position;
+            enemyController.instantiatedObject[3].GetComponent<Card>().isSubmitted = true;
+            SetSortingOrder(enemyController.instantiatedObject[3]);
+            if (placeSubmittedCard[1] != null)
+            {
+                Destroy(placeSubmittedCard[1]);
+            }
+            placeSubmittedCard[1] = enemyController.instantiatedObject[3];
+            placeController.SetPlace2Before(enemyController.handNumbers[3]);
         }
     }
 
@@ -126,5 +301,11 @@ public class GameManager : MonoBehaviour
         sortingOrder++;
     }
 
-
+    public IEnumerator GameOverCoroutine()
+    {
+        Time.timeScale = 0;
+        yield return new WaitForSecondsRealtime(10f);
+        Time.timeScale = 1;
+        SceneManager.LoadScene("Result");
+    }
 }
