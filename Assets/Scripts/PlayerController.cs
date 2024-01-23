@@ -1,5 +1,7 @@
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -144,13 +146,7 @@ public class PlayerController : MonoBehaviour
             RaycastHit2D hit2d = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction);
             if (!hit2d)
             {
-                Destroy(pastClickedGameObject);
-                isCardMovingToHand = false;
-                if (isCardsFinish)
-                {
-                    cards.SetActive(true);
-                    isCardsFinish = false;
-                }
+                StartCoroutine(GetMouseButtonUpWithNothing(pastClickedGameObject));
             }
             if (hit2d)
             {
@@ -209,13 +205,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    Destroy(pastClickedGameObject);
-                    isCardMovingToHand = false;
-                    if (isCardsFinish)
-                    {
-                        cards.SetActive(true);
-                        isCardsFinish = false;
-                    }
+                    StartCoroutine(GetMouseButtonUpWithNothing(pastClickedGameObject));
                 }
             }
         }
@@ -235,8 +225,7 @@ public class PlayerController : MonoBehaviour
                 clickedGameObjectInHand = hit2d.collider.gameObject;
                 if (clickedGameObjectInHand.CompareTag("Hand") || clickedGameObjectInHand.CompareTag("Cards"))
                 {
-                    movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
-                    isCardMovingToPlace = false;
+                    GetMouseButtonUpInPlaceWithNothing(pastClickedGameObjectInHand);
                     return;
                 }
                 if (pastClickedGameObjectInHand.name == "Hand1")
@@ -470,8 +459,7 @@ public class PlayerController : MonoBehaviour
             }
             if (!hit2d)
             {
-                movingCard.transform.position = pastClickedGameObjectInHand.transform.position;
-                isCardMovingToPlace = false;
+                GetMouseButtonUpInPlaceWithNothing(pastClickedGameObjectInHand);
             }
         }
     }
@@ -526,6 +514,28 @@ public class PlayerController : MonoBehaviour
         if (isHand1Full || isHand2Full || isHand3Full || isHand4Full) return;
         gameManager.isGameFinish = true;
         StartCoroutine(gameManager.GameOverCoroutine());
+    }
+
+    IEnumerator GetMouseButtonUpWithNothing(GameObject pastClickedGameObject)
+    {
+        pastClickedGameObject.transform.DOLocalMove(cards.transform.position, 0.1f);
+        isCardMovingToHand = false;
+
+        yield return new WaitForSeconds(0.1f);
+
+        Destroy(pastClickedGameObject);
+        if (isCardsFinish)
+        {
+            cards.SetActive(true);
+            isCardsFinish = false;
+        }
+    }
+
+    void GetMouseButtonUpInPlaceWithNothing(GameObject pastClickedGameObjectInHand)
+    {
+        movingCard.transform.DOLocalMove(pastClickedGameObjectInHand.transform.position, 0.1f);
+        isCardMovingToPlace = false;
+
     }
 
     public void JudgeCannotSubmit()

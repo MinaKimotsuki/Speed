@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
 
 public class EnemyController : MonoBehaviour
 {
@@ -62,7 +63,8 @@ public class EnemyController : MonoBehaviour
 
     void FirstSubmit(int i)
     {
-        instantiatedObject[i] = Instantiate(card, new Vector3(3 - (i * 2), 3, 0), Quaternion.Euler(0, 0, 180));
+        instantiatedObject[i] = Instantiate(card, new Vector3(6, 3, 0), Quaternion.Euler(0, 0, 180));
+        instantiatedObject[i].transform.DOLocalMove(new Vector3(3 - (i * 2), 3, 0), 0.1f);
         instantiatedObject[i].transform.GetChild(0).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][1].ToString();
         instantiatedObject[i].transform.GetChild(1).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][0].ToString();
         handNumbers[i] = enemyCardsController.EnemyCards[0][0];
@@ -105,7 +107,8 @@ public class EnemyController : MonoBehaviour
     {
         if (!isCardsFinish)
         {
-            instantiatedObject[handNotFull] = Instantiate(card, new Vector3(3 - (handNotFull * 2), 3, 0), Quaternion.Euler(0, 0, 180));
+            instantiatedObject[handNotFull] = Instantiate(card, new Vector3(5, 3, 0), Quaternion.Euler(0, 0, 180));
+            instantiatedObject[handNotFull].transform.DOLocalMove(new Vector3(3 - (handNotFull * 2), 3, 0), 0.1f);
             instantiatedObject[handNotFull].transform.GetChild(0).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][1].ToString();
             instantiatedObject[handNotFull].transform.GetChild(1).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][0].ToString();
             handNumbers[handNotFull] = enemyCardsController.EnemyCards[0][0];
@@ -150,7 +153,7 @@ public class EnemyController : MonoBehaviour
             if (placeController.IsPutPlace1OK(handNumbers[i]))
             {
                 gameManager.SetSortingOrder(instantiatedObject[i]);
-                instantiatedObject[i].transform.position = new Vector3(-1, 0, 0);
+                instantiatedObject[i].transform.DOLocalMove(new Vector3(-1, 0, 0), 0.1f);
                 isHandsFull[i] = false;
                 StartCoroutine(AfterSubmitCoroutine());
                 placeController.SetPlace1Before(handNumbers[i]);
@@ -167,7 +170,7 @@ public class EnemyController : MonoBehaviour
             else if (placeController.IsPutPlace2OK(handNumbers[i]))
             {
                 gameManager.SetSortingOrder(instantiatedObject[i]);
-                instantiatedObject[i].transform.position = new Vector3(1, 0, 0);
+                instantiatedObject[i].transform.DOLocalMove(new Vector3(1, 0, 0), 0.1f);
                 isHandsFull[i] = false;
                 StartCoroutine(AfterSubmitCoroutine());
                 placeController.SetPlace2Before(handNumbers[i]);
@@ -237,7 +240,7 @@ public class EnemyController : MonoBehaviour
 
     }
 
-    void JudgeIfGameFinish()
+    public void JudgeIfGameFinish()
     {
         if (!isCardsFinish) return;
         if (isHandFull[0] || isHandFull[1] || isHandFull[2] || isHandFull[3]) return;
