@@ -87,7 +87,7 @@ public class EnemyController : MonoBehaviour
             if (isHandsFull[i] == false)
             {
                 handNotFull = i;
-                isHandFull[i] = false;
+                //isHandFull[i] = false;
             }
         }
         Debug.Log(handNotFull);
@@ -206,31 +206,31 @@ public class EnemyController : MonoBehaviour
         {
             if (isHandsFull[0] == false || isHandsFull[1] == false || isHandsFull[2] == false || isHandsFull[3] == false) return;
         }
-        if (placeController.IsPutPlace1OK(handNumbers[0]) && isHandFull[0])
+        if (placeController.IsPutPlace1OK(handNumbers[0]) && isHandsFull[0])
         {
 
         }
-        else if (placeController.IsPutPlace1OK(handNumbers[1]) && isHandFull[1])
+        else if (placeController.IsPutPlace1OK(handNumbers[1]) && isHandsFull[1])
         {
 
         }
-        else if (placeController.IsPutPlace1OK(handNumbers[2]) && isHandFull[2])
+        else if (placeController.IsPutPlace1OK(handNumbers[2]) && isHandsFull[2])
         {
 
         }
-        else if (placeController.IsPutPlace1OK(handNumbers[3]) && isHandFull[3])
+        else if (placeController.IsPutPlace1OK(handNumbers[3]) && isHandsFull[3])
         {
 
         }
-        else if (placeController.IsPutPlace2OK(handNumbers[0]) && isHandFull[0])
+        else if (placeController.IsPutPlace2OK(handNumbers[0]) && isHandsFull[0])
         {
 
         }
-        else if (placeController.IsPutPlace2OK(handNumbers[1]) && isHandFull[1])
+        else if (placeController.IsPutPlace2OK(handNumbers[1]) && isHandsFull[1])
         {
 
         }
-        else if (placeController.IsPutPlace2OK(handNumbers[2]) && isHandFull[2])
+        else if (placeController.IsPutPlace2OK(handNumbers[2]) && isHandsFull[2])
         {
 
         }
@@ -256,7 +256,7 @@ public class EnemyController : MonoBehaviour
     public void JudgeIfGameFinish()
     {
         if (!isCardsFinish) return;
-        if (isHandFull[0] || isHandFull[1] || isHandFull[2] || isHandFull[3]) return;
+        if (isHandsFull[0] || isHandsFull[1] || isHandsFull[2] || isHandsFull[3]) return;
         gameManager.isGameFinish = true;
         StartCoroutine(gameManager.GameOverCoroutine());
     }

@@ -258,6 +258,8 @@ public class GameManager : MonoBehaviour
 
     public void SetSortingOrder(GameObject setObject)
     {
+        Debug.Log(setObject);
+        if (setObject == null) return;
         setObject.GetComponent<SortingGroup>().sortingOrder = sortingOrder;
         sortingOrder++;
     }
