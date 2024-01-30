@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool isPlace2andHand4OK;
 
     public bool isCardsFinish = false;
+    [SerializeField] Sprite[] cardImage;
 
     // Start is called before the first frame update
     void Start()
@@ -86,8 +87,10 @@ public class PlayerController : MonoBehaviour
                 if (isHand1Full == false || isHand2Full == false || isHand3Full == false || isHand4Full == false)
                 {
                     clickedGameObject = Instantiate(card, cards.transform.position, Quaternion.identity);
-                    clickedGameObject.transform.GetChild(0).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][1].ToString();
-                    clickedGameObject.transform.GetChild(1).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][0].ToString();
+                    Debug.Log(playerCardsController.PlayerCards[0][1] * 13 + playerCardsController.PlayerCards[0][0]);
+                    clickedGameObject.GetComponent<SpriteRenderer>().sprite = cardImage[playerCardsController.PlayerCards[0][1] * 13 + playerCardsController.PlayerCards[0][0] - 1];
+                    /*clickedGameObject.transform.GetChild(0).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][1].ToString();
+                    clickedGameObject.transform.GetChild(1).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][0].ToString();*/
                     isCardMovingToHand = true;
                     JudgeIfCardsFinish();
                 }

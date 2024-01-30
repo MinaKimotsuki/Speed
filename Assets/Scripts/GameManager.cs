@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     int sortingOrder = 1;
     public GameObject[] placeSubmittedCard = new GameObject[2];
     public bool isGameFinish = false;
+    [SerializeField] Sprite[] cardImage;
 
     // Start is called before the first frame update
     void Awake()
@@ -123,10 +124,13 @@ public class GameManager : MonoBehaviour
         firstSubmitedCard2.transform.DOLocalMove(place2.transform.position, 0.1f);
         /*Debug.Log(playerCardsController.PlayerCards.Count);
         Debug.Log(enemyCardsController.EnemyCards.Count);*/
-        firstSubmitedCard1.transform.GetChild(0).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][1].ToString();
-        firstSubmitedCard1.transform.GetChild(1).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][0].ToString();
-        firstSubmitedCard2.transform.GetChild(0).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][1].ToString();
-        firstSubmitedCard2.transform.GetChild(1).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][0].ToString();
+        Debug.Log(playerCardsController.PlayerCards[0][1] * 13 + playerCardsController.PlayerCards[0][0]);
+        firstSubmitedCard1.GetComponent<SpriteRenderer>().sprite = cardImage[playerCardsController.PlayerCards[0][1] * 13 + playerCardsController.PlayerCards[0][0] - 1];
+        /*firstSubmitedCard1.transform.GetChild(0).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][1].ToString();
+        firstSubmitedCard1.transform.GetChild(1).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][0].ToString();*/
+        firstSubmitedCard2.GetComponent<SpriteRenderer>().sprite = cardImage[enemyCardsController.EnemyCards[0][1] * 13 + enemyCardsController.EnemyCards[0][0] - 1];
+        /*firstSubmitedCard2.transform.GetChild(0).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][1].ToString();
+        firstSubmitedCard2.transform.GetChild(1).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][0].ToString();*/
         firstSubmitedCard1.GetComponent<Card>().isSubmitted = true;
         firstSubmitedCard2.GetComponent<Card>().isSubmitted = true;
         SetSortingOrder(firstSubmitedCard1);
@@ -143,8 +147,9 @@ public class GameManager : MonoBehaviour
         firstSubmitedCard1.transform.DOLocalMove(place1.transform.position, 0.1f);
         /*Debug.Log(playerCardsController.PlayerCards.Count);
         Debug.Log(enemyCardsController.EnemyCards.Count);*/
-        firstSubmitedCard1.transform.GetChild(0).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][1].ToString();
-        firstSubmitedCard1.transform.GetChild(1).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][0].ToString();
+        firstSubmitedCard1.GetComponent<SpriteRenderer>().sprite = cardImage[playerCardsController.PlayerCards[0][1] * 13 + playerCardsController.PlayerCards[0][0] - 1];
+        /*firstSubmitedCard1.transform.GetChild(0).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][1].ToString();
+        firstSubmitedCard1.transform.GetChild(1).GetComponent<TextMeshPro>().text = playerCardsController.PlayerCards[0][0].ToString();*/
         firstSubmitedCard1.GetComponent<Card>().isSubmitted = true;
         SetSortingOrder(firstSubmitedCard1);
         playerController.cardInHand1.GetComponent<Card>().isSubmitted = true;
@@ -161,8 +166,9 @@ public class GameManager : MonoBehaviour
         firstSubmitedCard2.transform.DOLocalMove(place2.transform.position, 0.1f);
         /*Debug.Log(playerCardsController.PlayerCards.Count);
         Debug.Log(enemyCardsController.EnemyCards.Count);*/
-        firstSubmitedCard2.transform.GetChild(0).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][1].ToString();
-        firstSubmitedCard2.transform.GetChild(1).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][0].ToString();
+        firstSubmitedCard2.GetComponent<SpriteRenderer>().sprite = cardImage[enemyCardsController.EnemyCards[0][1] * 13 + enemyCardsController.EnemyCards[0][0] - 1];
+        /*firstSubmitedCard2.transform.GetChild(0).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][1].ToString();
+        firstSubmitedCard2.transform.GetChild(1).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][0].ToString();*/
         firstSubmitedCard2.GetComponent<Card>().isSubmitted = true;
         SetSortingOrder(firstSubmitedCard2);
         placeController.SetPlace2Before(enemyCardsController.EnemyCards[0][0]);

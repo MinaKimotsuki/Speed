@@ -32,6 +32,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] bool isPlace2andHand4OK;
 
     public bool isCardsFinish = false;
+    [SerializeField] Sprite[] cardImage;
 
     // Start is called before the first frame update
     void Start()
@@ -58,6 +59,7 @@ public class EnemyController : MonoBehaviour
         FirstSubmit(3);
         cannotSubmit = true;
         JudgeCannotSubmit();
+        gameManager.SubmitWhenStuck();
         StartCoroutine(PlaceSubmitCoroutine());
     }
 
@@ -65,8 +67,10 @@ public class EnemyController : MonoBehaviour
     {
         instantiatedObject[i] = Instantiate(card, new Vector3(6, 3, 0), Quaternion.Euler(0, 0, 180));
         instantiatedObject[i].transform.DOLocalMove(new Vector3(3 - (i * 2), 3, 0), 0.1f);
-        instantiatedObject[i].transform.GetChild(0).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][1].ToString();
-        instantiatedObject[i].transform.GetChild(1).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][0].ToString();
+        Debug.Log(enemyCardsController.EnemyCards[0][1] * 13 + enemyCardsController.EnemyCards[0][0]);
+        instantiatedObject[i].GetComponent<SpriteRenderer>().sprite = cardImage[enemyCardsController.EnemyCards[0][1] * 13 + enemyCardsController.EnemyCards[0][0] - 1];
+        /*instantiatedObject[i].transform.GetChild(0).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][1].ToString();
+        instantiatedObject[i].transform.GetChild(1).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][0].ToString();*/
         handNumbers[i] = enemyCardsController.EnemyCards[0][0];
         isHandsFull[i] = true;
         enemyCardsController.EnemyCards.RemoveAt(0);
@@ -86,20 +90,21 @@ public class EnemyController : MonoBehaviour
                 isHandFull[i] = false;
             }
         }
+        Debug.Log(handNotFull);
         yield return new WaitForSeconds(3);
-        /*if (handNotFull == 4)
+        if (handNotFull == 4)
         {
             Debug.Log("c");
             isCoroutinePlay = false;
-            cannotSubmit = false;
+            playerController.cannotSubmit = true;
             playerController.JudgeCannotSubmit();
             gameManager.SubmitWhenStuck();
             Debug.Log("enemyStuck");
         }
         else
-        {*/
+        {
             AfterSubmit();
-        /*}*/
+        }
     }
 
 
@@ -108,9 +113,11 @@ public class EnemyController : MonoBehaviour
         if (!isCardsFinish)
         {
             instantiatedObject[handNotFull] = Instantiate(card, new Vector3(5, 3, 0), Quaternion.Euler(0, 0, 180));
+            Debug.Log(handNotFull);
             instantiatedObject[handNotFull].transform.DOLocalMove(new Vector3(3 - (handNotFull * 2), 3, 0), 0.1f);
-            instantiatedObject[handNotFull].transform.GetChild(0).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][1].ToString();
-            instantiatedObject[handNotFull].transform.GetChild(1).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][0].ToString();
+            instantiatedObject[handNotFull].GetComponent<SpriteRenderer>().sprite = cardImage[enemyCardsController.EnemyCards[0][1] * 13 + enemyCardsController.EnemyCards[0][0] - 1];
+            /*instantiatedObject[handNotFull].transform.GetChild(0).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][1].ToString();
+            instantiatedObject[handNotFull].transform.GetChild(1).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][0].ToString();*/
             handNumbers[handNotFull] = enemyCardsController.EnemyCards[0][0];
             isHandsFull[handNotFull] = true;
             enemyCardsController.EnemyCards.RemoveAt(0);
@@ -129,6 +136,10 @@ public class EnemyController : MonoBehaviour
     public IEnumerator PlaceSubmitCoroutine()
     {
         /*Debug.Log("ŒÄ‚Î‚ê‚½‚Q");*/
+        Debug.Log(isHandsFull[0]);
+        Debug.Log(isHandsFull[1]);
+        Debug.Log(isHandsFull[2]);
+        Debug.Log(isHandsFull[3]);
         if (isHandsFull[0] == true && isHandsFull[1] == true && isHandsFull[2] == true && isHandsFull[3] == true)
         {
             isCoroutinePlay = true;
@@ -161,6 +172,7 @@ public class EnemyController : MonoBehaviour
                 cannotSubmit = true;
                 playerController.JudgeCannotSubmit();
                 JudgeCannotSubmit();
+                gameManager.SubmitWhenStuck();
                 Destroy(gameManager.placeSubmittedCard[0]);
                 gameManager.placeSubmittedCard[0] = instantiatedObject[i];
                 Debug.Log(isCardsFinish);
@@ -178,6 +190,7 @@ public class EnemyController : MonoBehaviour
                 cannotSubmit = true;
                 playerController.JudgeCannotSubmit();
                 JudgeCannotSubmit();
+                gameManager.SubmitWhenStuck();
                 Destroy(gameManager.placeSubmittedCard[1]);
                 gameManager.placeSubmittedCard[1] = instantiatedObject[i];
                 JudgeIfGameFinish();
