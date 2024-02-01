@@ -173,7 +173,7 @@ public class EnemyController : MonoBehaviour
                 playerController.JudgeCannotSubmit();
                 JudgeCannotSubmit();
                 gameManager.SubmitWhenStuck();
-                Destroy(gameManager.placeSubmittedCard[0]);
+                //Destroy(gameManager.placeSubmittedCard[0]);
                 gameManager.placeSubmittedCard[0] = instantiatedObject[i];
                 Debug.Log(isCardsFinish);
                 JudgeIfGameFinish();
@@ -191,7 +191,7 @@ public class EnemyController : MonoBehaviour
                 playerController.JudgeCannotSubmit();
                 JudgeCannotSubmit();
                 gameManager.SubmitWhenStuck();
-                Destroy(gameManager.placeSubmittedCard[1]);
+                //Destroy(gameManager.placeSubmittedCard[1]);
                 gameManager.placeSubmittedCard[1] = instantiatedObject[i];
                 JudgeIfGameFinish();
                 return;

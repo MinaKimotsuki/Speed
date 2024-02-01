@@ -244,12 +244,16 @@ public class PlayerController : MonoBehaviour
                             return;
                         }
                         placeController.SetPlace1Before(hand1Number);
-                        Destroy(gameManager.placeSubmittedCard[0]);
+                        //Destroy(gameManager.placeSubmittedCard[0]);
                         gameManager.placeSubmittedCard[0] = movingCard;
                         cannotSubmit = true;
                         enemyController.cannotSubmit = true;
                         JudgeCannotSubmit();
                         enemyController.JudgeCannotSubmit();
+                        if (isCardsFinish)
+                        {
+                            gameManager.SubmitWhenStuck();
+                        }
                         JudgeIfGameFinish();
                         Debug.Log(enemyController.isCoroutinePlay);
                         if (!enemyController.isCoroutinePlay)
@@ -269,12 +273,16 @@ public class PlayerController : MonoBehaviour
                             return;
                         }
                         placeController.SetPlace2Before(hand1Number);
-                        Destroy(gameManager.placeSubmittedCard[1]);
+                        //Destroy(gameManager.placeSubmittedCard[1]);
                         gameManager.placeSubmittedCard[1] = movingCard;
                         cannotSubmit = true;
                         enemyController.cannotSubmit = true;
                         JudgeCannotSubmit();
                         enemyController.JudgeCannotSubmit();
+                        if (isCardsFinish)
+                        {
+                            gameManager.SubmitWhenStuck();
+                        }
                         JudgeIfGameFinish();
                         Debug.Log(enemyController.isCoroutinePlay);
                         if (!enemyController.isCoroutinePlay)
@@ -300,13 +308,17 @@ public class PlayerController : MonoBehaviour
                             return;
                         }
                         placeController.SetPlace1Before(hand2Number);
-                        Destroy(gameManager.placeSubmittedCard[0]);
+                        //Destroy(gameManager.placeSubmittedCard[0]);
                         gameManager.placeSubmittedCard[0] = movingCard;
                         movingCard.GetComponent<Card>().isSubmitted = true;
                         cannotSubmit = true;
                         enemyController.cannotSubmit = true;
                         JudgeCannotSubmit();
                         enemyController.JudgeCannotSubmit();
+                        if (isCardsFinish)
+                        {
+                            gameManager.SubmitWhenStuck();
+                        }
                         JudgeIfGameFinish();
                         Debug.Log(enemyController.isCoroutinePlay);
                         if (!enemyController.isCoroutinePlay)
@@ -325,13 +337,17 @@ public class PlayerController : MonoBehaviour
                             return;
                         }
                         placeController.SetPlace2Before(hand2Number);
-                        Destroy(gameManager.placeSubmittedCard[1]);
+                        //Destroy(gameManager.placeSubmittedCard[1]);
                         gameManager.placeSubmittedCard[1] = movingCard;
                         movingCard.GetComponent<Card>().isSubmitted = true;
                         cannotSubmit = true;
                         enemyController.cannotSubmit = true;
                         JudgeCannotSubmit();
                         enemyController.JudgeCannotSubmit();
+                        if (isCardsFinish)
+                        {
+                            gameManager.SubmitWhenStuck();
+                        }
                         JudgeIfGameFinish();
                         Debug.Log(enemyController.isCoroutinePlay);
                         if (!enemyController.isCoroutinePlay)
@@ -357,13 +373,17 @@ public class PlayerController : MonoBehaviour
                             return;
                         }
                         placeController.SetPlace1Before(hand3Number);
-                        Destroy(gameManager.placeSubmittedCard[0]);
+                        //Destroy(gameManager.placeSubmittedCard[0]);
                         gameManager.placeSubmittedCard[0] = movingCard;
                         movingCard.GetComponent<Card>().isSubmitted = true;
                         cannotSubmit = true;
                         enemyController.cannotSubmit = true;
                         JudgeCannotSubmit();
                         enemyController.JudgeCannotSubmit();
+                        if (isCardsFinish)
+                        {
+                            gameManager.SubmitWhenStuck();
+                        }
                         JudgeIfGameFinish();
                         Debug.Log(enemyController.isCoroutinePlay);
                         if (!enemyController.isCoroutinePlay)
@@ -382,13 +402,17 @@ public class PlayerController : MonoBehaviour
                             return;
                         }
                         placeController.SetPlace2Before(hand3Number);
-                        Destroy(gameManager.placeSubmittedCard[1]);
+                        //Destroy(gameManager.placeSubmittedCard[1]);
                         gameManager.placeSubmittedCard[1] = movingCard;
                         movingCard.GetComponent<Card>().isSubmitted = true;
                         cannotSubmit = true;
                         enemyController.cannotSubmit = true;
                         JudgeCannotSubmit();
                         enemyController.JudgeCannotSubmit();
+                        if (isCardsFinish)
+                        {
+                            gameManager.SubmitWhenStuck();
+                        }
                         JudgeIfGameFinish();
                         Debug.Log(enemyController.isCoroutinePlay);
                         if (!enemyController.isCoroutinePlay)
@@ -414,13 +438,17 @@ public class PlayerController : MonoBehaviour
                             return;
                         }
                         placeController.SetPlace1Before(hand4Number);
-                        Destroy(gameManager.placeSubmittedCard[0]);
+                        //Destroy(gameManager.placeSubmittedCard[0]);
                         gameManager.placeSubmittedCard[0] = movingCard;
                         movingCard.GetComponent<Card>().isSubmitted = true;
                         cannotSubmit = true;
                         enemyController.cannotSubmit = true;
                         JudgeCannotSubmit();
                         enemyController.JudgeCannotSubmit();
+                        if (isCardsFinish)
+                        {
+                            gameManager.SubmitWhenStuck();
+                        }
                         JudgeIfGameFinish();
                         Debug.Log(enemyController.isCoroutinePlay);
                         if (!enemyController.isCoroutinePlay)
@@ -439,13 +467,17 @@ public class PlayerController : MonoBehaviour
                             return;
                         }
                         placeController.SetPlace2Before(hand4Number);
-                        Destroy(gameManager.placeSubmittedCard[1]);
+                        //Destroy(gameManager.placeSubmittedCard[1]);
                         gameManager.placeSubmittedCard[1] = movingCard;
                         movingCard.GetComponent<Card>().isSubmitted = true;
                         cannotSubmit = true;
                         enemyController.cannotSubmit = true;
                         JudgeCannotSubmit();
                         enemyController.JudgeCannotSubmit();
+                        if (isCardsFinish)
+                        {
+                            gameManager.SubmitWhenStuck();
+                        }
                         JudgeIfGameFinish();
                         Debug.Log(enemyController.isCoroutinePlay);
                         if (!enemyController.isCoroutinePlay)
@@ -505,7 +537,18 @@ public class PlayerController : MonoBehaviour
     public void JudgeIfCardsFinish()
     {
         Debug.Log(playerCardsController.PlayerCards.Count);
-        if (playerCardsController.PlayerCards.Count != 1) return;
+        if (playerCardsController.PlayerCards.Count == 1)
+        {
+            Debug.Log("f");
+            cards.SetActive(false);
+            isCardsFinish = true;
+        }
+    }
+
+    public void JudgeIfPlayerCardsFinish()
+    {
+        Debug.Log(playerCardsController.PlayerCards.Count);
+        if (playerCardsController.PlayerCards.Count != 0) return;
         Debug.Log("f");
         cards.SetActive(false);
         isCardsFinish = true;

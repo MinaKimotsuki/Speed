@@ -80,8 +80,8 @@ public class GameManager : MonoBehaviour
     public void SubmitWhenStuck()
     {
         if (isGameFinish) return;
-        Debug.Log(playerController.cannotSubmit);
-        Debug.Log(enemyController.cannotSubmit);
+        /*Debug.Log(playerController.cannotSubmit);
+        Debug.Log(enemyController.cannotSubmit);*/
         if (playerController.cannotSubmit == true || enemyController.cannotSubmit == true) return;
         if (!playerController.isCardsFinish && !enemyController.isCardsFinish)
         {
@@ -184,6 +184,7 @@ public class GameManager : MonoBehaviour
             playerController.cardInHand1.GetComponent<Card>().isSubmitted = true;
             placeController.SetPlace1Before(playerController.playerCardsNumber1);
             playerController.isHand1Full = false;
+            playerController.JudgeIfPlayerCardsFinish();
             playerController.JudgeIfGameFinish();
         }
         else if (playerController.isHand2Full)
@@ -193,6 +194,7 @@ public class GameManager : MonoBehaviour
             playerController.cardInHand2.GetComponent<Card>().isSubmitted = true;
             placeController.SetPlace1Before(playerController.playerCardsNumber2);
             playerController.isHand2Full = false;
+            playerController.JudgeIfPlayerCardsFinish();
             playerController.JudgeIfGameFinish();
         }
         else if (playerController.isHand3Full)
@@ -202,6 +204,7 @@ public class GameManager : MonoBehaviour
             playerController.cardInHand3.GetComponent<Card>().isSubmitted = true;
             placeController.SetPlace1Before(playerController.playerCardsNumber3);
             playerController.isHand3Full = false;
+            playerController.JudgeIfPlayerCardsFinish();
             playerController.JudgeIfGameFinish();
         }
         else if (playerController.isHand4Full)
@@ -211,6 +214,7 @@ public class GameManager : MonoBehaviour
             playerController.cardInHand4.GetComponent<Card>().isSubmitted = true;
             placeController.SetPlace1Before(playerController.playerCardsNumber4);
             playerController.isHand4Full = false;
+            playerController.JudgeIfPlayerCardsFinish();
             playerController.JudgeIfGameFinish();
         }
     }
