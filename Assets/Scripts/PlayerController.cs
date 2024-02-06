@@ -248,6 +248,9 @@ public class PlayerController : MonoBehaviour
                         gameManager.SetSortingOrder(movingCard);
                         //Destroy(gameManager.placeSubmittedCard[0]);
                         gameManager.placeSubmittedCard[0] = movingCard;
+                        movingCard.GetComponent<Card>().isSubmitted = true;
+                        isHand1Full = false;
+                        gameManager.JudgeIfGameFinish();
                         cannotSubmit = true;
                         enemyController.cannotSubmit = true;
                         JudgeCannotSubmit();
@@ -256,7 +259,6 @@ public class PlayerController : MonoBehaviour
                         {
                             gameManager.SubmitWhenStuck();
                         }
-                        gameManager.JudgeIfGameFinish();
                         Debug.Log(enemyController.isCoroutinePlay);
                         if (!enemyController.isCoroutinePlay)
                         {
@@ -278,6 +280,9 @@ public class PlayerController : MonoBehaviour
                         gameManager.SetSortingOrder(movingCard);
                         //Destroy(gameManager.placeSubmittedCard[1]);
                         gameManager.placeSubmittedCard[1] = movingCard;
+                        movingCard.GetComponent<Card>().isSubmitted = true;
+                        isHand1Full = false;
+                        gameManager.JudgeIfGameFinish();
                         cannotSubmit = true;
                         enemyController.cannotSubmit = true;
                         JudgeCannotSubmit();
@@ -296,7 +301,6 @@ public class PlayerController : MonoBehaviour
                     }
                     cardInHand1.transform.position = clickedGameObjectInHand.transform.position;
                     isCardMovingToPlace = false;
-                    isHand1Full = false;
                     cardInHand1 = null;
                 }
                 if (pastClickedGameObjectInHand.name == "Hand2")
@@ -315,6 +319,8 @@ public class PlayerController : MonoBehaviour
                         //Destroy(gameManager.placeSubmittedCard[0]);
                         gameManager.placeSubmittedCard[0] = movingCard;
                         movingCard.GetComponent<Card>().isSubmitted = true;
+                        isHand2Full = false;
+                        gameManager.JudgeIfGameFinish();
                         cannotSubmit = true;
                         enemyController.cannotSubmit = true;
                         JudgeCannotSubmit();
@@ -323,7 +329,6 @@ public class PlayerController : MonoBehaviour
                         {
                             gameManager.SubmitWhenStuck();
                         }
-                        gameManager.JudgeIfGameFinish();
                         Debug.Log(enemyController.isCoroutinePlay);
                         if (!enemyController.isCoroutinePlay)
                         {
@@ -345,6 +350,8 @@ public class PlayerController : MonoBehaviour
                         //Destroy(gameManager.placeSubmittedCard[1]);
                         gameManager.placeSubmittedCard[1] = movingCard;
                         movingCard.GetComponent<Card>().isSubmitted = true;
+                        isHand2Full = false;
+                        gameManager.JudgeIfGameFinish();
                         cannotSubmit = true;
                         enemyController.cannotSubmit = true;
                         JudgeCannotSubmit();
@@ -353,7 +360,6 @@ public class PlayerController : MonoBehaviour
                         {
                             gameManager.SubmitWhenStuck();
                         }
-                        gameManager.JudgeIfGameFinish();
                         Debug.Log(enemyController.isCoroutinePlay);
                         if (!enemyController.isCoroutinePlay)
                         {
@@ -363,7 +369,6 @@ public class PlayerController : MonoBehaviour
                     }
                     cardInHand2.transform.position = clickedGameObjectInHand.transform.position;
                     isCardMovingToPlace = false;
-                    isHand2Full = false;
                     cardInHand2 = null;
                 }
                 if (pastClickedGameObjectInHand.name == "Hand3")
@@ -382,6 +387,8 @@ public class PlayerController : MonoBehaviour
                         //Destroy(gameManager.placeSubmittedCard[0]);
                         gameManager.placeSubmittedCard[0] = movingCard;
                         movingCard.GetComponent<Card>().isSubmitted = true;
+                        isHand3Full = false;
+                        gameManager.JudgeIfGameFinish();
                         cannotSubmit = true;
                         enemyController.cannotSubmit = true;
                         JudgeCannotSubmit();
@@ -390,7 +397,6 @@ public class PlayerController : MonoBehaviour
                         {
                             gameManager.SubmitWhenStuck();
                         }
-                        gameManager.JudgeIfGameFinish();
                         Debug.Log(enemyController.isCoroutinePlay);
                         if (!enemyController.isCoroutinePlay)
                         {
@@ -412,6 +418,8 @@ public class PlayerController : MonoBehaviour
                         //Destroy(gameManager.placeSubmittedCard[1]);
                         gameManager.placeSubmittedCard[1] = movingCard;
                         movingCard.GetComponent<Card>().isSubmitted = true;
+                        isHand3Full = false;
+                        gameManager.JudgeIfGameFinish();
                         cannotSubmit = true;
                         enemyController.cannotSubmit = true;
                         JudgeCannotSubmit();
@@ -420,7 +428,6 @@ public class PlayerController : MonoBehaviour
                         {
                             gameManager.SubmitWhenStuck();
                         }
-                        gameManager.JudgeIfGameFinish();
                         Debug.Log(enemyController.isCoroutinePlay);
                         if (!enemyController.isCoroutinePlay)
                         {
@@ -430,7 +437,6 @@ public class PlayerController : MonoBehaviour
                     }
                     cardInHand3.transform.position = clickedGameObjectInHand.transform.position;
                     isCardMovingToPlace = false;
-                    isHand3Full = false;
                     cardInHand3 = null;
                 }
                 if (pastClickedGameObjectInHand.name == "Hand4")
@@ -449,6 +455,8 @@ public class PlayerController : MonoBehaviour
                         //Destroy(gameManager.placeSubmittedCard[0]);
                         gameManager.placeSubmittedCard[0] = movingCard;
                         movingCard.GetComponent<Card>().isSubmitted = true;
+                        isHand4Full = false;
+                        gameManager.JudgeIfGameFinish();
                         cannotSubmit = true;
                         enemyController.cannotSubmit = true;
                         JudgeCannotSubmit();
@@ -457,7 +465,6 @@ public class PlayerController : MonoBehaviour
                         {
                             gameManager.SubmitWhenStuck();
                         }
-                        gameManager.JudgeIfGameFinish();
                         Debug.Log(enemyController.isCoroutinePlay);
                         if (!enemyController.isCoroutinePlay)
                         {
@@ -479,6 +486,8 @@ public class PlayerController : MonoBehaviour
                         //Destroy(gameManager.placeSubmittedCard[1]);
                         gameManager.placeSubmittedCard[1] = movingCard;
                         movingCard.GetComponent<Card>().isSubmitted = true;
+                        isHand4Full = false;
+                        gameManager.JudgeIfGameFinish();
                         cannotSubmit = true;
                         enemyController.cannotSubmit = true;
                         JudgeCannotSubmit();
@@ -487,7 +496,6 @@ public class PlayerController : MonoBehaviour
                         {
                             gameManager.SubmitWhenStuck();
                         }
-                        gameManager.JudgeIfGameFinish();
                         Debug.Log(enemyController.isCoroutinePlay);
                         if (!enemyController.isCoroutinePlay)
                         {
@@ -497,7 +505,6 @@ public class PlayerController : MonoBehaviour
                     }
                     cardInHand4.transform.position = clickedGameObjectInHand.transform.position;
                     isCardMovingToPlace = false;
-                    isHand4Full = false;
                     cardInHand4 = null;
                 }
             }

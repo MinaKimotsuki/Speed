@@ -184,6 +184,7 @@ public class EnemyController : MonoBehaviour
                     isHandsFull[i] = false;
                     afterSubmitCoroutine = StartCoroutine(AfterSubmitCoroutine());
                     placeController.SetPlace1Before(handNumbers[i]);
+                    gameManager.JudgeIfGameFinish();
                     playerController.cannotSubmit = true;
                     cannotSubmit = true;
                     playerController.JudgeCannotSubmit();
@@ -192,7 +193,6 @@ public class EnemyController : MonoBehaviour
                     //Destroy(gameManager.placeSubmittedCard[0]);
                     gameManager.placeSubmittedCard[0] = instantiatedObject[i];
                     Debug.Log(isCardsFinish);
-                    gameManager.JudgeIfGameFinish();
                     return;
                 }
                 else if (placeController.IsPutPlace2OK(handNumbers[i]))
@@ -202,6 +202,7 @@ public class EnemyController : MonoBehaviour
                     isHandsFull[i] = false;
                     afterSubmitCoroutine = StartCoroutine(AfterSubmitCoroutine());
                     placeController.SetPlace2Before(handNumbers[i]);
+                    gameManager.JudgeIfGameFinish();
                     playerController.cannotSubmit = true;
                     cannotSubmit = true;
                     playerController.JudgeCannotSubmit();
@@ -209,7 +210,6 @@ public class EnemyController : MonoBehaviour
                     gameManager.SubmitWhenStuck();
                     //Destroy(gameManager.placeSubmittedCard[1]);
                     gameManager.placeSubmittedCard[1] = instantiatedObject[i];
-                    gameManager.JudgeIfGameFinish();
                     return;
                 }
             }
