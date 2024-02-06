@@ -144,10 +144,7 @@ public class EnemyController : MonoBehaviour
     public IEnumerator PlaceSubmitCoroutine()
     {
         Debug.Log("PlaceSubmitCoroutine");
-        if (placeSubmitCoroutine != null)
-        {
-            StopCoroutine(placeSubmitCoroutine);
-        }
+        
         /*Debug.Log("ŒÄ‚Î‚ê‚½‚Q");*/
         /*Debug.Log(isHandsFull[0]);
         Debug.Log(isHandsFull[1]);
@@ -172,6 +169,10 @@ public class EnemyController : MonoBehaviour
     }
     void PlaceSubmit()
     {
+        if (placeSubmitCoroutine != null)
+        {
+            StopCoroutine(placeSubmitCoroutine);
+        }
         for (int i = 0; i < 4; i++)
         {
             if (isHandsFull[i])
