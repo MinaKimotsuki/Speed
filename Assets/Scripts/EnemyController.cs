@@ -51,13 +51,13 @@ public class EnemyController : MonoBehaviour
 
     IEnumerator FirstSubmitCoroutine()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         FirstSubmit(0);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         FirstSubmit(1);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         FirstSubmit(2);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         FirstSubmit(3);
         cannotSubmit = true;
         JudgeCannotSubmit();
