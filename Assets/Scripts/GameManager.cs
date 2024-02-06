@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,12 +23,16 @@ public class GameManager : MonoBehaviour
     public GameObject[] placeSubmittedCard = new GameObject[2];
     public bool isGameFinish = false;
     [SerializeField] Sprite[] cardImage;
+    [SerializeField] Text resultText;
+    List<string> pausableCoroutines = new List<string>();
+    public static string result;
 
     // Start is called before the first frame update
     void Awake()
     {
         SplitCards();
         SubmitFirstCard();
+        resultText.enabled = false;
     }
 
     // Update is called once per frame
@@ -103,7 +108,7 @@ public class GameManager : MonoBehaviour
             EnemyLastSubmit();
         }
         Debug.Log("bothStuck");
-        playerController.JudgeIfCardsFinish();
+        playerController.JudgeIfPlayerCardsFinish();
         enemyController.JudgeIfCardsFinish();
         playerController.cannotSubmit = true;
         enemyController.cannotSubmit = true;
@@ -154,9 +159,9 @@ public class GameManager : MonoBehaviour
         SetSortingOrder(firstSubmitedCard1);
         playerController.cardInHand1.GetComponent<Card>().isSubmitted = true;
         placeController.SetPlace1Before(playerController.playerCardsNumber1);
-        playerController.isHand1Full = false;
-        playerController.JudgeIfGameFinish();
-        placeController.SetPlace1Before(playerCardsController.PlayerCards[0][0]);
+        //playerController.isHand1Full = false;
+        JudgeIfGameFinish();
+        //placeController.SetPlace1Before(playerCardsController.PlayerCards[0][0]);
         playerCardsController.PlayerCards.RemoveAt(0);
     }
 
@@ -171,6 +176,7 @@ public class GameManager : MonoBehaviour
         firstSubmitedCard2.transform.GetChild(1).GetComponent<TextMeshPro>().text = enemyCardsController.EnemyCards[0][0].ToString();*/
         firstSubmitedCard2.GetComponent<Card>().isSubmitted = true;
         SetSortingOrder(firstSubmitedCard2);
+        JudgeIfGameFinish();
         placeController.SetPlace2Before(enemyCardsController.EnemyCards[0][0]);
         enemyCardsController.EnemyCards.RemoveAt(0);
     }
@@ -184,8 +190,7 @@ public class GameManager : MonoBehaviour
             playerController.cardInHand1.GetComponent<Card>().isSubmitted = true;
             placeController.SetPlace1Before(playerController.playerCardsNumber1);
             playerController.isHand1Full = false;
-            playerController.JudgeIfPlayerCardsFinish();
-            playerController.JudgeIfGameFinish();
+            JudgeIfGameFinish();
         }
         else if (playerController.isHand2Full)
         {
@@ -194,8 +199,7 @@ public class GameManager : MonoBehaviour
             playerController.cardInHand2.GetComponent<Card>().isSubmitted = true;
             placeController.SetPlace1Before(playerController.playerCardsNumber2);
             playerController.isHand2Full = false;
-            playerController.JudgeIfPlayerCardsFinish();
-            playerController.JudgeIfGameFinish();
+            JudgeIfGameFinish();
         }
         else if (playerController.isHand3Full)
         {
@@ -204,8 +208,7 @@ public class GameManager : MonoBehaviour
             playerController.cardInHand3.GetComponent<Card>().isSubmitted = true;
             placeController.SetPlace1Before(playerController.playerCardsNumber3);
             playerController.isHand3Full = false;
-            playerController.JudgeIfPlayerCardsFinish();
-            playerController.JudgeIfGameFinish();
+            JudgeIfGameFinish();
         }
         else if (playerController.isHand4Full)
         {
@@ -214,21 +217,23 @@ public class GameManager : MonoBehaviour
             playerController.cardInHand4.GetComponent<Card>().isSubmitted = true;
             placeController.SetPlace1Before(playerController.playerCardsNumber4);
             playerController.isHand4Full = false;
-            playerController.JudgeIfPlayerCardsFinish();
-            playerController.JudgeIfGameFinish();
+            JudgeIfGameFinish();
         }
     }
 
     void EnemyLastSubmit()
     {
-        if (enemyController.isHandFull[0])
+        if (enemyController.isHandsFull[0])
         {
             enemyController.instantiatedObject[0].transform.DOLocalMove(place2.transform.position, 0.1f);
             SetSortingOrder(enemyController.instantiatedObject[0]);
             enemyController.instantiatedObject[0].GetComponent<Card>().isSubmitted = true;
             placeController.SetPlace2Before(enemyController.handNumbers[0]);
-            enemyController.isHandFull[0] = false;
-            enemyController.JudgeIfGameFinish();
+            enemyController.isHandsFull[0] = false;
+            StopEnemyCoroutines();
+            StartCoroutine(enemyController.PlaceSubmitCoroutine());
+            Debug.Log("g");
+            JudgeIfGameFinish();
         }
         else if (playerController.isHand2Full)
         {
@@ -236,8 +241,11 @@ public class GameManager : MonoBehaviour
             SetSortingOrder(enemyController.instantiatedObject[1]);
             enemyController.instantiatedObject[1].GetComponent<Card>().isSubmitted = true;
             placeController.SetPlace2Before(enemyController.handNumbers[1]);
-            enemyController.isHandFull[1] = false;
-            enemyController.JudgeIfGameFinish();
+            enemyController.isHandsFull[1] = false;
+            StopEnemyCoroutines();
+            StartCoroutine(enemyController.PlaceSubmitCoroutine());
+            Debug.Log("g");
+            JudgeIfGameFinish();
 
         }
         else if (playerController.isHand3Full)
@@ -246,8 +254,11 @@ public class GameManager : MonoBehaviour
             SetSortingOrder(enemyController.instantiatedObject[2]);
             enemyController.instantiatedObject[2].GetComponent<Card>().isSubmitted = true;
             placeController.SetPlace2Before(enemyController.handNumbers[2]);
-            enemyController.isHandFull[2] = false;
-            enemyController.JudgeIfGameFinish();
+            enemyController.isHandsFull[2] = false;
+            StopEnemyCoroutines();
+            StartCoroutine(enemyController.PlaceSubmitCoroutine());
+            Debug.Log("g");
+            JudgeIfGameFinish();
         }
         else if (playerController.isHand4Full)
         {
@@ -255,9 +266,51 @@ public class GameManager : MonoBehaviour
             SetSortingOrder(enemyController.instantiatedObject[3]);
             enemyController.instantiatedObject[3].GetComponent<Card>().isSubmitted = true;
             placeController.SetPlace2Before(enemyController.handNumbers[3]);
-            enemyController.isHandFull[3] = false;
-            enemyController.JudgeIfGameFinish();
+            enemyController.isHandsFull[3] = false;
+            StopEnemyCoroutines();
+            StartCoroutine(enemyController.PlaceSubmitCoroutine());
+            Debug.Log("g");
+            JudgeIfGameFinish();
         }
+    }
+
+    public void JudgeIfGameFinish()
+    {
+        bool playerFinish = false;
+        bool enemyFinish = false;
+        if (playerController.isCardsFinish && !playerController.isHand1Full && !playerController.isHand2Full && !playerController.isHand3Full && !playerController.isHand4Full)
+        {
+            playerFinish = true;
+        }
+        if (enemyController.isCardsFinish && !enemyController.isHandsFull[0] && !enemyController.isHandsFull[1] && !enemyController.isHandsFull[2] && !enemyController.isHandsFull[3])
+        {
+            enemyFinish = true;
+        }
+
+        if (playerFinish && enemyFinish)
+        {
+            resultText.enabled = true;
+            resultText.text = "DRAW";
+            result = "DRAW";
+        }
+        else if (playerFinish)
+        {
+            resultText.enabled = true;
+            resultText.text = "WIN";
+            result = "WIN";
+        }
+        else if (enemyFinish)
+        {
+            resultText.enabled = true;
+            resultText.text = "LOSE";
+            result = "LOSE";
+        }
+        else
+        {
+            return;
+        }
+        isGameFinish = true;
+        StartCoroutine(GameOverCoroutine());
     }
 
     public void SetSortingOrder(GameObject setObject)
@@ -270,9 +323,15 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator GameOverCoroutine()
     {
+        yield return new WaitForSeconds(0.1f);
         Time.timeScale = 0;
-        yield return new WaitForSecondsRealtime(10f);
+        yield return new WaitForSecondsRealtime(5f);
         Time.timeScale = 1;
         SceneManager.LoadScene("Result");
+    }
+
+    void StopEnemyCoroutines()
+    {
+        enemyController.StopEnemyCoroutines();
     }
 }
